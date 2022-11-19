@@ -12,5 +12,5 @@ const server = new ApolloServer({
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
-  context,
+  context: context(server),
 }).then(() => console.log("App started on port 4000"));

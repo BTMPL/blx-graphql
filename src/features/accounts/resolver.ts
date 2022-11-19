@@ -1,4 +1,4 @@
-import { getAccounts } from "./api";
+import { getAccounts } from "./dataSource";
 
 export const resolvers = {
   Query: {
