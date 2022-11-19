@@ -14,16 +14,13 @@ import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { Context, context } from "./context";
-import { authDirective, getUser } from "./context/auth";
+import { authDirective } from "./context/auth";
 import { logPlugin } from "./context/log";
 
 import { resolvers } from "./resolvers";
 import typeDefs from "./typedefs";
 
-const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective(
-  "auth",
-  getUser
-);
+const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective();
 
 const schema = authDirectiveTransformer(
   makeExecutableSchema({
