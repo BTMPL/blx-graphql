@@ -1,0 +1,31 @@
+type Account {
+  id: ID
+  name: String
+  balance: Float
+}
+
+type Query {
+  accounts: [Account]
+  users: [User]
+}
+
+type UserAccount {
+  id: ID
+  name: String
+  balance: Float
+}
+
+type User {
+  id: ID
+  name: String
+  accounts: [UserAccount]
+}
+
+type Mutation {
+  login(id: ID): User
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
