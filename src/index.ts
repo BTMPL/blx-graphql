@@ -1,8 +1,21 @@
+import * as dotenv from "dotenv";
+
+process.env.NODE_ENV = process.env.NODE_ENV || "development";
+dotenv.config({
+  path:
+    process.env.NODE_ENV === "production"
+      ? ".env"
+      : require("fs").existsSync(`.env.${process.env.NODE_ENV}.local`)
+      ? `.env.${process.env.NODE_ENV}.local`
+      : `.env.${process.env.NODE_ENV}`,
+});
+
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { Context, context } from "./context";
 import { authDirective, getUser } from "./context/auth";
+import { logPlugin } from "./context/log";
 
 import { resolvers } from "./resolvers";
 import typeDefs from "./typedefs";
@@ -19,7 +32,10 @@ const schema = authDirectiveTransformer(
   })
 );
 
-const server = new ApolloServer<Context>({ schema });
+const server = new ApolloServer<Context>({
+  schema,
+  plugins: [process.env.LOGGER === "true" && logPlugin].filter(Boolean),
+});
 
 startStandaloneServer(server, {
   listen: { port: 4000 },
