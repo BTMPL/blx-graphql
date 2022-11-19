@@ -32,13 +32,20 @@ export const authContext = async (
   return {};
 };
 
-export const authDirective = (
-  directiveName: string,
-  getUserFn: (token: string) => { isAuthorised: (role: string) => boolean }
-) => {
+export const isAuthorised = (token: string, role: string) => {
+  switch (role) {
+    case "USER":
+      return !!token;
+    case "UNKNOWN":
+      return true;
+  }
+  return false;
+};
+
+export const authDirective = () => {
   const typeDirectiveArgumentMaps: Record<string, any> = {};
   return {
-    authDirectiveTypeDefs: `directive @${directiveName}(
+    authDirectiveTypeDefs: `directive @auth(
       requires: Role = USER,
     ) on OBJECT | FIELD_DEFINITION
  
@@ -49,7 +56,7 @@ export const authDirective = (
     authDirectiveTransformer: (schema: GraphQLSchema) =>
       mapSchema(schema, {
         [MapperKind.TYPE]: (type) => {
-          const authDirective = getDirective(schema, type, directiveName)?.[0];
+          const authDirective = getDirective(schema, type, "auth")?.[0];
           if (authDirective) {
             typeDirectiveArgumentMaps[type.name] = authDirective;
           }
@@ -57,7 +64,7 @@ export const authDirective = (
         },
         [MapperKind.OBJECT_FIELD]: (fieldConfig, _fieldName, typeName) => {
           const authDirective =
-            getDirective(schema, fieldConfig, directiveName)?.[0] ??
+            getDirective(schema, fieldConfig, "auth")?.[0] ??
             typeDirectiveArgumentMaps[typeName];
           if (authDirective) {
             const { requires } = authDirective;
@@ -69,8 +76,7 @@ export const authDirective = (
                 context: Context,
                 info
               ) {
-                const user = getUserFn(context.auth.jwt);
-                if (!user.isAuthorised(requires)) {
+                if (!isAuthorised(context.auth.jwt, requires)) {
                   throw new Error("Not authorized");
                 }
                 return resolve(source, args, context, info);
@@ -80,19 +86,5 @@ export const authDirective = (
           }
         },
       }),
-  };
-};
-
-export const getUser = (token: string) => {
-  return {
-    isAuthorised: (role: string) => {
-      switch (role) {
-        case "USER":
-          return !!token;
-        case "UNKNOWN":
-          return true;
-      }
-      return false;
-    },
   };
 };
