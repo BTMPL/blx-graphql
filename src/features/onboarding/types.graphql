@@ -1,0 +1,19 @@
+type UserAccount {
+  id: ID
+  name: String
+  balance: Float
+}
+
+type User {
+  id: ID
+  name: String
+  accounts: [UserAccount]
+}
+
+type Query {
+  users: [User]
+}
+
+type Mutation {
+  login(id: ID): User
+}
