@@ -2,11 +2,11 @@ import type { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   overwrite: true,
-  schema: "src/generated/joined.graphql",
+  schema: "generated/joined.graphql",
   generates: {
-    "src/generated/graphql.ts": {
+    "generated/graphql.ts": {
       config: {
-        contextType: "../context#Context",
+        contextType: "../src/context#Context",
       },
       presetConfig: {
         baseTypesPath: "../graphql.ts",
