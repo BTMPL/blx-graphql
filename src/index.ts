@@ -11,6 +11,7 @@ dotenv.config({
 });
 
 import { ApolloServer } from "@apollo/server";
+import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { context } from "./context";
@@ -32,7 +33,11 @@ const schema = authDirectiveTransformer(
 
 const server = new ApolloServer<Context>({
   schema,
-  plugins: [process.env.LOGGER === "true" && logPlugin].filter(Boolean),
+  plugins: [
+    process.env.LOGGER === "true" && logPlugin,
+    process.env.NODE_ENV === "production" &&
+      ApolloServerPluginLandingPageDisabled(),
+  ].filter(Boolean),
 });
 
 const port = parseInt(process.env.PORT) || 4000;
