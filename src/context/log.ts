@@ -1,5 +1,8 @@
+import { GraphQLRequestContext, GraphQLResponse } from "@apollo/server";
+import { Context } from "./types";
+
 export const logPlugin = {
-  async requestDidStart(requestContext) {
+  async requestDidStart(requestContext: GraphQLRequestContext<Context>) {
     if (requestContext.request.operationName === "IntrospectionQuery") return;
 
     console.log({
@@ -12,7 +15,7 @@ export const logPlugin = {
     });
 
     return {
-      async willSendResponse(context) {
+      async willSendResponse(context: GraphQLRequestContext<Context>) {
         if (context.request.operationName === "IntrospectionQuery") return;
         console.log({
           type: "response",
