@@ -12,7 +12,7 @@ type Query {
 type User {
   id: ID
   name: String
-  accounts: [Account!]
+  accounts: [Account!] @auth(requires: USER)
 }
 
 type Mutation {
