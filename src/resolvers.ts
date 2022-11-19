@@ -1,6 +1,6 @@
 import { resolvers as users } from "./features/onboarding/resolver";
 import { resolvers as accounts } from "./features/accounts/resolver";
-import { Resolvers } from "./generated/graphql";
+import { Resolvers } from "../generated/graphql";
 
 const enabledResolvers = [users, accounts];
 

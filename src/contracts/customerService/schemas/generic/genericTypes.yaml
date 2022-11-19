@@ -1,0 +1,429 @@
+components:
+  schemas:
+    BumiputeraStatus:
+      type: string
+      enum:
+        - BUMIPUTERA_CONTROLLED
+        - NON_BUMIPUTERA_CONTROLLED
+        - NON_RESIDENT_CONTROLLED
+        - GOVERNMENT_CONTROLLED
+
+    CustomerType:
+      type: string
+      enum:
+        - BANK_STAFF
+        - EXTERNAL_CUSTOMER
+        - SME_DIRECTOR
+        - SME_APPLICANT
+
+    DeviceStatus:
+      type: string
+      enum:
+        - UNVERIFIED
+        - ACTIVE_UNVERIFIED
+        - ACTIVE_VERIFIED
+        - INACTIVE_VERIFIED
+
+    CustomerStatusType:
+      type: string
+      enum:
+        - ELIGIBILITY
+        - IDENTITY_VERIFICATION
+        - CRR
+        - CBS
+
+    CustomerStatusValue:
+      type: string
+      enum:
+        - NOT_INITIATED
+        - INITIATED
+        - PASSED
+        - FAILED
+
+    CustomerOverallStatus:
+      type: string
+      enum:
+        - ONBOARDED
+        - ACTIVE
+        - FAILED
+        - PROSPECT
+        - ARCHIVED
+        - OFFBOARDING_PENDING
+        - OFFBOARDED
+
+    CustomerDepositAccountStatus:
+      type: string
+      enum:
+        - ACTIVE
+        - INACTIVE
+
+    AccountStatus:
+      type: string
+      enum:
+        - INITIATED
+        - INITIALISATION_FAILURE
+        - INACTIVE
+        - ACTIVE
+        - DORMANT
+        - BLOCKED
+        - PENDING_CLOSURE
+        - CLOSED
+
+    Account:
+      type: object
+      title: "Customer account"
+      properties:
+        accountId:
+          type: string
+          description: 'ID of the account'
+        accountNumber:
+          type: string
+          description: 'Account number which allows for funds transfer to/from this account'
+        status:
+          $ref: '#/components/schemas/AccountStatus'
+      required:
+        - accountId
+        - accountNumber
+        - status
+
+    MobilePreferences:
+      type: object
+      title: "Customer mobile preferences"
+      properties:
+        pushNotificationsAllowed:
+          type: boolean
+          description: "Push notifications allowed"
+          example: true
+        marketingEmailFlag:
+          type: boolean
+          description: "Marketing with email consent"
+          example: true
+        marketingPhoneCallFlag:
+          type: boolean
+          description: "Marketing with phone call consent"
+          example: true
+        marketingSmsFlag:
+          type: boolean
+          description: "Marketing with sms consent"
+          example: true
+        marketingPushFlag:
+          type: boolean
+          description: "Marketing with Push notifications consent"
+          example: true
+
+    SmeProfiles:
+      type: object
+      title: "Sme profiles"
+      properties:
+        noOfEmployees:
+          type: string
+          description: "Number of employees of sme"
+          example: 5
+        annualSalesTurnover:
+          type: string
+          description: "Annual sales turnover of sme"
+          example: 10000
+        bumiputeraStatus:
+          description: 'Bumiputera status of smes profile'
+          type: string
+          $ref: '#/components/schemas/BumiputeraStatus'
+        businessActivitiesCountries:
+          type: array
+          items:
+            type: string
+            description: "Business activity country"
+            example: "USA"
+        countriesOfSupplier:
+          type: array
+          items:
+            type: string
+            description: "Supplier country"
+            example: "USA"
+        businessEmailAddress:
+          type: string
+          description: "Email of sme"
+          example: "bussinessEmail123@email.mys"
+        description:
+          type: string
+          description: "Description"
+          example: "Some description"
+      required:
+        - noOfEmployees
+        - annualSalesTurnover
+        - businessActivitiesCountries
+        - countriesOfSupplier
+        - businessEmailAddress
+
+    Profiles:
+      type: object
+      title: "Customer mobile profiles"
+      properties:
+        maritalStatus:
+          type: string
+          description: "Customer's marital status"
+          example: true
+        ethnicity:
+          type: string
+          description: "Customer's ethnicity"
+          example: true
+        accountSettingUpReasons:
+          type: array
+          description: "Account setting up reasons"
+          items:
+            type: string
+        bnmCcc:
+          type: string
+          description: "BNM CCC of customer profile"
+          example: "Individual Bumi"
+        residencyStatus:
+          type: string
+          description: "Residency status of customer profile"
+          example: "U"
+        entityType:
+          type: integer
+          format: int64
+          example: 11
+          description: "Entity type of customer profile"
+        religion:
+          type: string
+          example: "Islam"
+          description: "Declared religion of the customer"
+
+    SmeCustomerRole:
+      type: object
+      title: "SmeCustomer role"
+      properties:
+        name:
+          type: string
+          description: "SmeCustomer role name"
+        displayName:
+          type: string
+          description: "SmeCustomer role displayName"
+
+    Device:
+      type: object
+      title: "Customer's device"
+      properties:
+        deviceId:
+          type: string
+          description: 'Device id'
+          example: '1635944521024644'
+        createdAt:
+          type: string
+          format: date-time
+          description: 'Creation date time'
+          example: '2021-10-15T18:00:00'
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'Last update date time'
+          example: '2021-10-15T18:00:00'
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          example: "iOS 14"
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          example: "iPhone X"
+        deviceInstallationId:
+          type: string
+          description: "Device installation id"
+          example: "a346d8d9-84a0-401f-84bd-233dcf83c4bb"
+        deviceStatus:
+          type: string
+          description: "Device status"
+          example: "active"
+
+    DocumentId:
+      type: object
+      title: "Document id"
+      properties:
+        document_id:
+          type: integer
+          format: int64
+          description: 'Document id'
+          example: 1
+      required:
+        - document_id
+
+    Document:
+      type: object
+      title: "Document"
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Document id"
+          example: 1
+        url:
+          type: string
+          description: "Document url"
+        title:
+          type: string
+          description: "Document title"
+          example: "Agency Appointment Clause"
+        version:
+          type: integer
+          description: "Document version"
+          example: 1
+        type:
+          type: string
+          description: "Document type"
+          example: "privacy-policy"
+        createdOn:
+          type: string
+          format: date-time
+          description: 'Creation date time'
+          example: '2021-10-15T18:00:00'
+        lastUpdated:
+          type: string
+          format: date-time
+          description: 'Modification date time'
+          example: '2021-10-15T18:00:00'
+
+    AcceptedDocument:
+      type: object
+      title: 'Document acceptance'
+      properties:
+        acceptedDocumentId:
+          type: integer
+          format: int64
+          description: "Document acceptance id"
+          example: 1
+        acceptedDocumentDate:
+          type: string
+          format: date-time
+          example: "2021-10-15T18:00:00"
+        document:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/Document'
+
+    Iam:
+      type: object
+      title: "Identity and access management"
+      properties:
+        username:
+          type: string
+          description: "Customer's username"
+          example: "username"
+        pingOneId:
+          type: string
+          description: "Customer's ping one id"
+          example: "123"
+
+    Address:
+      type: object
+      title: "Customer's address data"
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: "Address id"
+          readOnly: true
+          example: 1
+        line1:
+          type: string
+          description: "Line 1 of address"
+          example: "Baker street"
+        line2:
+          type: string
+          description: "Line 2 of address"
+          example: "1"
+        line3:
+          type: string
+          description: "Line 3 of address"
+          example: "2/3"
+        line4:
+          type: string
+          description: "Line 4 of address"
+          example: "1"
+        line5:
+          type: string
+          description: "Line 5 of address"
+          example: "1"
+        countryCode:
+          type: string
+          description: "Country code"
+          example: "MYS"
+        city:
+          type: string
+          description: "City"
+          example: "Kuala Lumpur"
+        postalCode:
+          type: string
+          description: "Postal code"
+          example: "12345"
+        subdivision:
+          type: string
+          description: "Subdivision"
+          example: "North region"
+        type:
+          type: string
+          description: "Address type"
+          enum:
+            - RESIDENTIAL
+            - MAILING
+      required:
+        - postalCode
+        - city
+        - countryCode
+        - subdivision
+        - type
+  Address:
+    type: object
+    title: "Customer's address data"
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: "Address id"
+        readOnly: true
+        example: 1
+      line1:
+        type: string
+        description: "Line 1 of address"
+        example: "Baker street"
+      line2:
+        type: string
+        description: "Line 2 of address"
+        example: "1"
+      line3:
+        type: string
+        description: "Line 3 of address"
+        example: "2/3"
+      line4:
+        type: string
+        description: "Line 4 of address"
+        example: "1"
+      line5:
+        type: string
+        description: "Line 5 of address"
+        example: "1"
+      countryCode:
+        type: string
+        description: "Country code"
+        example: "MYS"
+      city:
+        type: string
+        description: "City"
+        example: "Kuala Lumpur"
+      postalCode:
+        type: string
+        description: "Postal code"
+        example: "12345"
+      subdivision:
+        type: string
+        description: "Subdivision"
+        example: "North region"
+      type:
+        type: string
+        description: "Address type"
+        enum:
+          - RESIDENTIAL
+          - MAILING
+    required:
+      - postalCode
+      - city
+      - countryCode
+      - subdivision
+      - type

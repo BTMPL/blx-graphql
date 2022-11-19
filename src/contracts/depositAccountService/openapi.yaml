@@ -1,0 +1,94 @@
+openapi: 3.0.3
+
+info:
+  title: Deposit Account API
+  version: 0.0.1
+
+tags:
+  - name: Saving accounts
+    description: Operations related to saving accounts
+
+paths:
+  /saving-accounts/{accountId}/activate:
+    put:
+      tags:
+        - Saving accounts
+      description: Activate the account
+      operationId: activateAccountByAccountId
+      parameters:
+        - in: path
+          name: accountId
+          schema:
+            type: string
+            format: uuid
+          example: 006e19a7-7c0e-63d0-8f7b-b52c483c5278
+          required: true
+      responses:
+        '200':
+          description: Saving account has been succesfully activated.
+          content:
+            "application/json;version=1":
+              schema:
+                $ref: './schemas/saving-account.yaml#/SavingAccount'
+        '404':
+          description: There is no account with given id. Please review the request argument and send again.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+        '400':
+          description: Cannot activate given account, because of validation failure.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+        '500':
+          description: We had a problem with our server. Please try again later.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+  /customer-accounts/{customerId}/accounts:
+    get:
+      tags:
+        - Accounts
+      description: Get all customer's accounts
+      operationId: getCustomerAccounts
+      parameters:
+        - in: path
+          name: customerId
+          schema:
+            type: string
+          example: 01440771331881091463
+          required: true
+      responses:
+        '200':
+          description: Customer's accounts have been succesfully retrieved.
+          content:
+            "application/json;version=1":
+              schema:
+                $ref: './schemas/customer-account.yaml#/CustomerAccounts'
+        '404':
+          description: No accounts found for given customer id.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+        '500':
+          description: We had a problem with our server. Please try again later.
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/problems.yaml#/ErrorResponse'

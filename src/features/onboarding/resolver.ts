@@ -1,5 +1,5 @@
 import { Context } from "../../context";
-import { Account, MutationLoginArgs, User } from "../../generated/graphql";
+import { Account, MutationLoginArgs, User } from "../../../generated/graphql";
 import { getAccountsByUser } from "../accounts/api";
 import * as api from "./api";
 

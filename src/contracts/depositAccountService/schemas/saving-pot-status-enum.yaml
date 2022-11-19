@@ -1,0 +1,12 @@
+SavingPotStatus:
+  enum:
+    - INITIATED
+    - INACTIVE
+    - ACTIVE
+    - DORMANT
+    - BLOCKED
+    - PENDING_CLOSURE
+    - CLOSED
+    - CANCELLED
+
+  description: 'Status of the saving pot.'

@@ -1,0 +1,81 @@
+components:
+  responses:
+    NotFound:
+      description: The specified resource was not found (404)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Found:
+      description: Found Error description (302)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadRequest:
+      description: BadRequest Error description (400)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Unauthenticated:
+      description: Unauthenticated Error description (401)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    Forbidden:
+      description: Forbidden Error description (403)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    UnprocessableEntity:
+      description: UnprocessableEntity Error description (422)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    AccountAlreadyExistExceptionEntity:
+      description: UnprocessableEntity Error description (409)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: InternalServerError Error description (500)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    BadGateway:
+      description: BadGateway Error description (502)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    ServiceUnavailable:
+      description: ServiceUnavailable Error description (503)
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  schemas:
+    # Schema for error response body
+    Error:
+      type: object
+      title: "Error message"
+      properties:
+        name:
+          type: string
+          description: "Human readable, unique name of the error."
+        message:
+          type: string
+          description: "Message describing the error."
+        error_id:
+          type: string
+          description: "Error id to easy search in logs."
+      required:
+        - name
+        - message
+        - error_id
