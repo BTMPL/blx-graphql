@@ -1,7 +1,7 @@
 type Account {
-  id: ID
-  name: String
-  balance: Float
+  id: ID!
+  name: String!
+  balance: Float!
 }
 
 type Query {
