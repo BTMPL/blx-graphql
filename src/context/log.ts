@@ -3,7 +3,7 @@ export const logPlugin = {
     if (requestContext.request.operationName === "IntrospectionQuery") return;
 
     console.log({
-      type: "incomming",
+      type: "request",
       query: requestContext.request.query,
       variables: requestContext.request.variables,
       user: {
@@ -15,7 +15,7 @@ export const logPlugin = {
       async willSendResponse(context) {
         if (context.request.operationName === "IntrospectionQuery") return;
         console.log({
-          type: "result",
+          type: "response",
           response: context.response.body,
           user: {
             id: context.contextValue.auth.id,
