@@ -6,7 +6,7 @@ const config: CodegenConfig = {
   generates: {
     "generated/graphql.ts": {
       config: {
-        contextType: "../src/context#Context",
+        contextType: "../src/context/types#Context",
       },
       presetConfig: {
         baseTypesPath: "../graphql.ts",
