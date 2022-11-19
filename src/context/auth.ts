@@ -9,19 +9,20 @@ interface Token {
 export interface Auth {
   id?: string;
   name?: string;
+  jwt?: string;
 }
 
 export const authContext = async (
   args: StandaloneServerContextFunctionArgument
 ): Promise<Auth> => {
   if (args.req.headers["authorization"]) {
-    const payload = jwtDecode<Token>(
-      args.req.headers["authorization"].replace("Bearer ", "")
-    );
+    const token = args.req.headers["authorization"].replace("Bearer ", "");
+    const payload = jwtDecode<Token>(token);
 
     return {
       id: payload.id,
       name: payload.name,
+      jwt: token,
     };
   }
 

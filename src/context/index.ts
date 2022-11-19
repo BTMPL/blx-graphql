@@ -2,14 +2,22 @@ import { ApolloServer } from "@apollo/server";
 import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
 
 import { DataSources, dataSources } from "../features";
-
 import { authContext, Auth } from "./auth";
 
-const data = (cache) =>
+const data = ({
+  server,
+  token,
+}: {
+  server: ApolloServer<Context>;
+  token: string;
+}) =>
   Object.entries(dataSources).reduce((accumulator, [name, source]) => {
     return {
       ...accumulator,
-      [name]: new source({ cache }),
+      [name]: new source({
+        cache: server.cache,
+        token,
+      }),
     };
   }, {} as DataSources);
 
@@ -25,6 +33,6 @@ export const context =
 
     return {
       auth,
-      dataSources: data(server.cache),
+      dataSources: data({ server, token: auth.jwt }),
     };
   };

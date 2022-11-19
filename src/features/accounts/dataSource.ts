@@ -1,5 +1,5 @@
-import { RESTDataSource } from "@apollo/datasource-rest";
 import { Account } from "../../../generated/graphql";
+import { AuthenticatedRESTDataSource } from "../../dataSource";
 
 const accounts = [
   {
@@ -12,7 +12,7 @@ const accounts = [
 export const getAccounts = () => accounts;
 export const getAccountsByUser = (userId: string) => accounts[0];
 
-export class AccountAPI extends RESTDataSource {
+export class AccountAPI extends AuthenticatedRESTDataSource {
   override baseURL = "https://movies-api.example.com/";
 
   async getAccounts(): Promise<Account[]> {
