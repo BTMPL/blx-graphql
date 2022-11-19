@@ -6,4 +6,7 @@ const fs = require("fs");
 const loadedFiles = loadFilesSync(`${__dirname}/../src/features/**/*.graphql`);
 const typeDefs = mergeTypeDefs(loadedFiles);
 const printedTypeDefs = print(typeDefs);
-fs.writeFileSync(`${__dirname}/../src/assets/joined.graphql`, printedTypeDefs);
+fs.writeFileSync(
+  `${__dirname}/../src/generated/joined.graphql`,
+  printedTypeDefs
+);

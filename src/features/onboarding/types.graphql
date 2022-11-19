@@ -1,13 +1,7 @@
-type UserAccount {
-  id: ID
-  name: String
-  balance: Float
-}
-
 type User {
   id: ID
   name: String
-  accounts: [UserAccount]
+  accounts: [Account!]
 }
 
 type Query {
@@ -15,5 +9,5 @@ type Query {
 }
 
 type Mutation {
-  login(id: ID): User
+  login(id: ID!): User
 }
