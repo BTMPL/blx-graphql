@@ -13,7 +13,8 @@ dotenv.config({
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
 import { makeExecutableSchema } from "@graphql-tools/schema";
-import { Context, context } from "./context";
+import { context } from "./context";
+import { Context } from "./context/types";
 import { authDirective } from "./context/auth";
 import { logPlugin } from "./context/log";
 
@@ -34,7 +35,9 @@ const server = new ApolloServer<Context>({
   plugins: [process.env.LOGGER === "true" && logPlugin].filter(Boolean),
 });
 
+const port = parseInt(process.env.PORT) || 4000;
+
 startStandaloneServer(server, {
-  listen: { port: 4000 },
+  listen: { port },
   context: context(server),
-}).then(() => console.log("App started on port 4000"));
+}).then(() => console.log(`App started on port ${port}`));

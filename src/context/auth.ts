@@ -2,18 +2,7 @@ import { mapSchema, getDirective, MapperKind } from "@graphql-tools/utils";
 import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
 import { defaultFieldResolver, GraphQLSchema } from "graphql";
 import jwtDecode from "jwt-decode";
-import { Context } from ".";
-
-interface Token {
-  id: string;
-  name: string;
-}
-
-export interface Auth {
-  id?: string;
-  name?: string;
-  jwt?: string;
-}
+import { Auth, Context, Token } from "./types";
 
 export const authContext = async (
   args: StandaloneServerContextFunctionArgument

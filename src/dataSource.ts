@@ -3,7 +3,7 @@ import {
   WillSendRequestOptions,
 } from "@apollo/datasource-rest";
 import { ApolloServer } from "@apollo/server";
-import { Context } from "./context";
+import { Context } from "./context/types";
 
 export class AuthenticatedRESTDataSource extends RESTDataSource {
   protected token: string = "";

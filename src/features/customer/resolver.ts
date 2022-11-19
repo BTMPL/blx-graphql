@@ -1,5 +1,5 @@
-import { Context } from "../../context";
 import { Account, MutationLoginArgs, User } from "../../../generated/graphql";
+import { Context } from "../../context/types";
 
 export const resolvers = {
   Query: {
