@@ -4,7 +4,6 @@ import { Account, MutationLoginArgs, User } from "../../../generated/graphql";
 export const resolvers = {
   Query: {
     users: async (_, __, context: Context): Promise<User[]> => {
-      console.log(context);
       return await context.dataSources.customer.getAllUsers();
     },
   },
@@ -23,10 +22,6 @@ export const resolvers = {
       args,
       context: Context
     ): Promise<Account[]> => {
-      console.log({
-        parent,
-        context,
-      });
       return context.dataSources.account.getAccountsByUser(parent.id);
     },
   },
