@@ -22,6 +22,7 @@ const schema = authDirectiveTransformer(
 
 const server = new ApolloServer<Context>({
   schema,
+  introspection: config.introspection,
   plugins: [
     config.logging && logPlugin(),
     !config.enableLandingPage && ApolloServerPluginLandingPageDisabled(),
