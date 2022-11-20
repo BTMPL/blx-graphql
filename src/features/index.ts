@@ -1,16 +1,16 @@
 import { resolvers as customer } from "./customer/resolver";
-import { resolvers as accounts } from "./accounts/resolver";
+import { resolvers as depositAccount } from "./depositAccount/resolver";
 import { CustomerAPI } from "./customer/dataSource";
-import { AccountAPI } from "./accounts/dataSource";
+import { AccountAPI } from "./depositAccount/dataSource";
 
-export const resolvers = [customer, accounts];
+export const resolvers = [customer, depositAccount];
 
 export interface DataSources {
   customer: CustomerAPI;
-  account: AccountAPI;
+  depositAccount: AccountAPI;
 }
 
 export const dataSources = {
   customer: CustomerAPI,
-  account: AccountAPI,
+  depositAccount: AccountAPI,
 };

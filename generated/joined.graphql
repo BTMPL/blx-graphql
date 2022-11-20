@@ -1,22 +1,22 @@
-type Account {
-  id: ID!
-  name: String!
-  balance: Float!
-}
-
-type Query {
-  accounts: [Account]
-  users: [User]
-}
-
 type User {
   id: ID
   name: String
-  accounts: [Account!] @auth(requires: USER)
+  accounts: [DepositAccount!] @auth(requires: USER)
+}
+
+type Query {
+  users: [User]
+  depositAccount: [DepositAccount]
 }
 
 type Mutation {
   login(id: ID!): User
+}
+
+type DepositAccount {
+  id: ID!
+  name: String!
+  balance: Float!
 }
 
 schema {

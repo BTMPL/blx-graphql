@@ -16,4 +16,12 @@ export const config = {
   logging: strToBoolean(process.env.LOGGER),
   enableLandingPage: process.env.NODE_ENV !== "production",
   port: parseInt(process.env.PORT) || 4000,
+  services: {
+    customer: {
+      url: process.env.SERVICE_CUSTOMER_URL,
+    },
+    depositAccout: {
+      url: process.env.SERVICE_DEPOSIT_ACCOUNT_URL,
+    },
+  },
 };

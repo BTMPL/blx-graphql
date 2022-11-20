@@ -1,9 +1,9 @@
-type Account {
+type DepositAccount {
   id: ID!
   name: String!
   balance: Float!
 }
 
 type Query {
-  accounts: [Account]
+  depositAccount: [DepositAccount]
 }

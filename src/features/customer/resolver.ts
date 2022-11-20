@@ -1,4 +1,8 @@
-import { Account, MutationLoginArgs, User } from "../../../generated/graphql";
+import {
+  DepositAccount,
+  MutationLoginArgs,
+  User,
+} from "../../../generated/graphql";
 import { Context } from "../../context/types";
 
 export const resolvers = {
@@ -21,8 +25,8 @@ export const resolvers = {
       parent: User,
       args: any,
       context: Context
-    ): Promise<Account[]> => {
-      return context.dataSources.account.getAccountsByUser(parent.id);
+    ): Promise<DepositAccount[]> => {
+      return context.dataSources.depositAccount.getAccountsByUser(parent.id);
     },
   },
 };
