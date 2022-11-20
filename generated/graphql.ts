@@ -16,8 +16,8 @@ export type Scalars = {
   Float: number;
 };
 
-export type Account = {
-  __typename?: 'Account';
+export type DepositAccount = {
+  __typename?: 'DepositAccount';
   balance: Scalars['Float'];
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -35,13 +35,13 @@ export type MutationLoginArgs = {
 
 export type Query = {
   __typename?: 'Query';
-  accounts?: Maybe<Array<Maybe<Account>>>;
+  depositAccount?: Maybe<Array<Maybe<DepositAccount>>>;
   users?: Maybe<Array<Maybe<User>>>;
 };
 
 export type User = {
   __typename?: 'User';
-  accounts?: Maybe<Array<Account>>;
+  accounts?: Maybe<Array<DepositAccount>>;
   id?: Maybe<Scalars['ID']>;
   name?: Maybe<Scalars['String']>;
 };
@@ -115,8 +115,8 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Account: ResolverTypeWrapper<Account>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  DepositAccount: ResolverTypeWrapper<DepositAccount>;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
@@ -127,8 +127,8 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Account: Account;
   Boolean: Scalars['Boolean'];
+  DepositAccount: DepositAccount;
   Float: Scalars['Float'];
   ID: Scalars['ID'];
   Mutation: {};
@@ -137,7 +137,7 @@ export type ResolversParentTypes = {
   User: User;
 };
 
-export type AccountResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Account'] = ResolversParentTypes['Account']> = {
+export type DepositAccountResolvers<ContextType = Context, ParentType extends ResolversParentTypes['DepositAccount'] = ResolversParentTypes['DepositAccount']> = {
   balance?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -149,19 +149,19 @@ export type MutationResolvers<ContextType = Context, ParentType extends Resolver
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  accounts?: Resolver<Maybe<Array<Maybe<ResolversTypes['Account']>>>, ParentType, ContextType>;
+  depositAccount?: Resolver<Maybe<Array<Maybe<ResolversTypes['DepositAccount']>>>, ParentType, ContextType>;
   users?: Resolver<Maybe<Array<Maybe<ResolversTypes['User']>>>, ParentType, ContextType>;
 };
 
 export type UserResolvers<ContextType = Context, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
-  accounts?: Resolver<Maybe<Array<ResolversTypes['Account']>>, ParentType, ContextType>;
+  accounts?: Resolver<Maybe<Array<ResolversTypes['DepositAccount']>>, ParentType, ContextType>;
   id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type Resolvers<ContextType = Context> = {
-  Account?: AccountResolvers<ContextType>;
+  DepositAccount?: DepositAccountResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
