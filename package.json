@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "ts-node-dev ./src/index.ts",
-    "compile": "tsc",
-    "start": "npm run compile && node ./dist/index.js",
+    "build": "tsc",
+    "start": "node ./dist/src/index.js",
     "schema:merge": "ts-node ./scripts/mergeSchema.ts",
     "schema:generate-ts": "graphql-codegen",
     "schema:all": "npm run schema:merge && npm run schema:generate-ts"
