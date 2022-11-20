@@ -1,15 +1,3 @@
-import * as dotenv from "dotenv";
-
-process.env.NODE_ENV = process.env.NODE_ENV || "development";
-dotenv.config({
-  path:
-    process.env.NODE_ENV === "production"
-      ? ".env"
-      : require("fs").existsSync(`.env.${process.env.NODE_ENV}.local`)
-      ? `.env.${process.env.NODE_ENV}.local`
-      : `.env.${process.env.NODE_ENV}`,
-});
-
 import { ApolloServer } from "@apollo/server";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
 import { startStandaloneServer } from "@apollo/server/standalone";
@@ -21,6 +9,7 @@ import { logPlugin } from "./context/log";
 
 import { resolvers } from "./resolvers";
 import typeDefs from "./typedefs";
+import { config } from "./config";
 
 const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective();
 
@@ -34,15 +23,12 @@ const schema = authDirectiveTransformer(
 const server = new ApolloServer<Context>({
   schema,
   plugins: [
-    process.env.LOGGER === "true" && logPlugin,
-    process.env.NODE_ENV === "production" &&
-      ApolloServerPluginLandingPageDisabled(),
+    config.logging && logPlugin(),
+    !config.enableLandingPage && ApolloServerPluginLandingPageDisabled(),
   ].filter(Boolean),
 });
 
-const port = parseInt(process.env.PORT) || 4000;
-
 startStandaloneServer(server, {
-  listen: { port },
+  listen: { port: config.port },
   context: context(server),
-}).then(() => console.log(`App started on port ${port}`));
+}).then(() => console.log(`App started on port ${config.port}`));
