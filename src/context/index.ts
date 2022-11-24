@@ -1,5 +1,5 @@
 import { ApolloServer } from "@apollo/server";
-import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm/standalone";
+import { ExpressContextFunctionArgument } from "@apollo/server/dist/esm/express4";
 
 import { DataSources, dataSources } from "../features";
 import { authContext } from "./auth";
@@ -24,7 +24,7 @@ const data = ({
 
 export const context =
   (server: ApolloServer<Context>) =>
-  async (args: StandaloneServerContextFunctionArgument): Promise<Context> => {
+  async (args: ExpressContextFunctionArgument): Promise<Context> => {
     const auth = await authContext(args);
 
     return {
