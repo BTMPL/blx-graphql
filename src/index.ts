@@ -1,7 +1,17 @@
-import { ApolloServer } from "@apollo/server";
+import { ApolloServer, ContextFunction } from "@apollo/server";
 import { ApolloServerPluginLandingPageDisabled } from "@apollo/server/plugin/disabled";
-import { startStandaloneServer } from "@apollo/server/standalone";
 import { makeExecutableSchema } from "@graphql-tools/schema";
+
+import {
+  ExpressContextFunctionArgument,
+  expressMiddleware,
+} from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import http from "http";
+import bodyParser from "body-parser";
+import cors from "cors";
+import express from "express";
+
 import { context } from "./context";
 import { Context } from "./context/types";
 import { authDirective } from "./context/auth";
@@ -29,7 +39,43 @@ const server = new ApolloServer<Context>({
   ].filter(Boolean),
 });
 
-startStandaloneServer(server, {
-  listen: { port: config.port },
+async function initServer(
+  server: ApolloServer<Context>,
+  options: {
+    port: number;
+    context: ContextFunction<[ExpressContextFunctionArgument], Context>;
+  }
+) {
+  const app: express.Express = express();
+  const httpServer: http.Server = http.createServer(app);
+
+  server.addPlugin(
+    ApolloServerPluginDrainHttpServer({ httpServer: httpServer })
+  );
+
+  await server.start();
+
+  app.use(
+    cors(),
+    bodyParser.json(),
+    expressMiddleware(server, { context: options.context })
+  );
+
+  await new Promise<void>((resolve) => {
+    httpServer.listen(
+      {
+        port: options.port,
+      },
+      resolve
+    );
+  });
+
+  return { port: options.port };
+}
+
+initServer(server, {
+  port: config.port,
   context: context(server),
-}).then(() => console.log(`App started on port ${config.port}`));
+}).then(({ port }: { port: number }) =>
+  console.log(`App started on port ${port}`)
+);
