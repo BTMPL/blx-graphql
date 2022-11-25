@@ -11,6 +11,7 @@ import http from "http";
 import bodyParser from "body-parser";
 import cors from "cors";
 import express from "express";
+import depthLimit from "graphql-depth-limit";
 
 import { context } from "./context";
 import { Context } from "./context/types";
@@ -33,6 +34,7 @@ const schema = authDirectiveTransformer(
 const server = new ApolloServer<Context>({
   schema,
   introspection: config.introspection,
+  validationRules: [depthLimit(config.maxQueryDepth)],
   plugins: [
     config.logging && logPlugin(),
     !config.enableLandingPage && ApolloServerPluginLandingPageDisabled(),
