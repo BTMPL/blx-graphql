@@ -1,0 +1,52 @@
+on:
+  workflow_dispatch:
+name: Build and upload artefacts to S3
+jobs:
+  build:
+    name: Build and upload
+    runs-on: ubuntu-latest
+    env:
+      PROJECT_NAME: my-mfe-name
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+    steps:
+      - name: Get current date
+        # We will use the date to create an archive of releases in the `_archive` folder
+        #
+        # Each MFE release will create a separate entry like:
+        # _archive/my-mfe-name/2022-11-28-21-42-32
+        # _archive/my-mfe-name/2022-11-28-21-52-32
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y-%m-%d-%H-%M-%S')"
+
+      - name: Checkout master Branch
+        uses: actions/checkout@v2
+        with:
+          ref: "master"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate schema
+        run: npm run schema:all
+
+      - name: Copy generation artefacts
+        run: cp -R ./generated ./dist
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.S3_BUCKET_REGION }}
+
+      - name: Deploy
+        # This deploys the actual MFE to its own folder on the S3 and also deploys a copy to the
+        # `_archive` folder in one go.
+        run: |
+          aws s3 sync ./dist s3://${{ secrets.S3_BUCKET }}/${{ env.PROJECT_NAME }} --delete
+          aws s3 cp s3://${{ secrets.S3_BUCKET }}/${{ env.PROJECT_NAME }} s3://${{ secrets.S3_BUCKET }}/_archive/${{ env.PROJECT_NAME }}/${{ steps.date.outputs.date }}  --recursive
+          aws cloudfront create-invalidation --distribution-id E24HI4JS8DCJYA --paths "/"
