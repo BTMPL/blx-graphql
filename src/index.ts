@@ -57,6 +57,10 @@ async function initServer(
 
   await server.start();
 
+  app.get("/health", (req, res) => {
+    res.send({ status: "ok" });
+  });
+
   app.use(
     cors(),
     bodyParser.json(),
