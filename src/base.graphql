@@ -1,0 +1,4 @@
+"""
+Date custom scalar type
+"""
+scalar Date

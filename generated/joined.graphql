@@ -1,16 +1,391 @@
-type User {
-  id: ID
-  name: String
-  accounts: [DepositAccount!] @auth(requires: USER)
+"""Date custom scalar type"""
+scalar Date
+
+enum CustomerDepositAccountStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum CustomerStatusValue {
+  NOT_INITIATED
+  INITIATED
+  PASSED
+  FAILED
+}
+
+enum CustomerOverallStatus {
+  ONBOARDED
+  ACTIVE
+  FAILED
+  PROSPECT
+  ARCHIVED
+}
+
+enum CustomerAccountStatus {
+  INITIATED
+  INITIALISATION_FAILURE
+  INACTIVE
+  ACTIVE
+  DORMANT
+  BLOCKED
+  PENDING_CLOSURE
+  CLOSED
+}
+
+enum AddressEnum {
+  RESIDENTIAL
+  MAILING
+}
+
+enum EmploymentType {
+  EMPLOYER
+  GOVERNMENT_EMPLOYEE
+  PRIVATE_EMPLOYEE
+  SELF_EMPLOYED
+  UNPAID_FAMILY_WORKER
+  HOUSEWIFE_HOUSEHUSBAND
+  RETIREE
+  STUDENT
+  UNEMPLOYED
+  OTHER_OUTSIDE_LABOUR_FORCE
+  REPORTING_ENTITY_EMPLOYEE
+}
+
+enum AnnualIncomeBracket {
+  LESS_THAN_RM12000
+  RM12000_RM17999
+  RM18000_RM23999
+  RM24000_RM35999
+  RM36000_RM47999
+  RM48000_RM71999
+  RM72000_RM95999
+  RM96000_RM119999
+  RM120000_AND_ABOVE
+}
+
+enum OtpValidationStatus {
+  FAILED
+  APPROVED
+  APPROVED_ALREADY_EXISTS
 }
 
 type Query {
-  users: [User]
+  checkUsernameUniqueness(username: String!): CheckUsernameUniquenessResponse
   depositAccount: [DepositAccount]
 }
 
 type Mutation {
-  login(id: ID!): User
+  createInitialCustomer(customerMobileInput: CustomerMobileDeviceInput!): CreateCustomerResponse!
+  createIamAccount(iamAccountInput: CreateIamAccountInput!): CreateIamAccountResponse!
+  storePersonalDetails(personalDetailsInput: PersonalDetailsInput!): PersonalDetailsResponse!
+  validateOtp(otpValidationInput: OtpValidationInput!): OtpValidationResponse!
+}
+
+input CreateIamAccountInput {
+  customerId: String!
+  email: String
+  username: String
+  password: String
+  secureword: String
+  phoneNumber: String
+}
+
+input PersonalDetailsInput {
+  customerId: String!
+  mobilePreferences: MobilePreferencesInput!
+  employment: SaveEmploymentDataInput!
+  profiles: ProfilesInput!
+  acceptedDocuments: [DocumentIdInput!]!
+  mailingAddress: AddressInput
+  mailingAddressSameAsResidence: Boolean!
+  email: String
+  nickname: String
+}
+
+input MobilePreferencesInput {
+  pushNotificationsAllowed: Boolean
+  marketingEmailFlag: Boolean
+  marketingPhoneCallFlag: Boolean
+  marketingSmsFlag: Boolean
+  marketingPushFlag: Boolean
+}
+
+input SaveEmploymentDataInput {
+  employer: String
+  employmentType: EmploymentType!
+  employmentSector: String
+  occupation: String
+  annualIncomeBracket: AnnualIncomeBracket
+}
+
+input ProfilesInput {
+  maritalStatus: String
+  ethnicity: String
+  accountSettingUpReasons: [String!]
+}
+
+input DocumentIdInput {
+  documentId: Int!
+}
+
+input AddressInput {
+  line1: String
+  line2: String
+  line3: String
+  line4: String
+  line5: String
+  countryCode: String!
+  city: String!
+  postalCode: String!
+  subdivision: String!
+  type: AddressEnum!
+}
+
+input OtpValidationInput {
+  customerId: String!
+  phoneNumber: String!
+  otp: String!
+  deviceInstallationId: String!
+}
+
+input CustomerMobileDeviceInput {
+  phoneNumber: String!
+  deviceOs: String!
+  deviceModel: String!
+  deviceInstallationId: String
+}
+
+type PersonalDetailsResponse {
+  customer: CustomerDetailsResponse
+  requestId: String
+}
+
+type CreateCustomerResponse {
+  customerId: String @deprecated(reason: "Use customerId available in `customer` objectt")
+  customer: CustomerDetailsResponse
+}
+
+type CustomerStatuses {
+  eligibility: CustomerStatusValue!
+  identityVerifiaction: CustomerStatusValue!
+  crr: CustomerStatusValue!
+  cbs: CustomerStatusValue!
+  depositAccounts: CustomerDepositAccountStatus!
+  overall: CustomerOverallStatus!
+}
+
+type CustomerMobilePreferences {
+  marketingChannels: CustomerMobilePreferencesMarketingChannels!
+}
+
+type CustomerMobilePreferencesMarketingChannels {
+  email: Boolean!
+  sms: Boolean!
+  phoneCall: Boolean!
+}
+
+type Device {
+  deviceId: String
+  createdAt: Date
+  updatedAt: Date
+  deviceOs: String
+  deviceModel: String
+  deviceInstallationId: String
+  deviceStatus: String
+  phoneNumber: String @deprecated(reason: "Field is no longer available.")
+}
+
+type Account {
+  accountId: String!
+  accountNumber: String!
+  status: CustomerAccountStatus!
+}
+
+type CustomerEmploymentDataResponseNew {
+  id: Int
+  employer: String
+  employmentType: ValuesEmployment!
+  employmentSector: String
+  occupation: String
+  annualIncome: Values
+  employerName: String @deprecated(reason: "Use employer field.")
+}
+
+type Values {
+  code: String
+  name: String
+}
+
+type ValuesEmployment {
+  code: String
+  name: String
+  requiresAllEmploymentDetails: Boolean
+}
+
+type Employment {
+  employmentType: String
+  employerName: String
+  occupation: String
+  employmentSector: String
+  annualIncomeBracket: String
+}
+
+type Profiles {
+  maritalStatus: String
+  ethnicity: String
+  accountSettingUpReasons: [String]
+  bnmCcc: String
+  residencyStatus: String
+  entityType: Int
+  religion: String
+  email: String @deprecated(reason: "Field is no longer available.")
+  employment: Employment @deprecated(reason: "Field is no longer available.")
+  reasonsForSettingUpTheAccount: [String!] @deprecated(reason: "Use accountSettingUpReasons field.")
+}
+
+type AcceptedDocument {
+  acceptedDocumentId: Int
+  acceptedDocumentString: String @deprecated(reason: "Field is no longer available.")
+  acceptedDocumentDate: Date
+  document: Document
+}
+
+type Document {
+  id: Int
+  url: String
+  title: String
+  version: Int
+  type: String
+  alias: String
+}
+
+type CustomerDetailsResponse {
+  id: ID
+  createdAt: Date
+  updatedAt: Date
+  firstName: String
+  lastName: String
+  nickname: String
+  phoneNumber: String
+  email: String
+  nric: String
+  username: String @deprecated(reason: "Field is no longer available.")
+  status: String @deprecated(reason: "Field is no longer available.")
+  statuses: CustomerStatuses
+  type: String
+  mobilePreferences: MobilePreferences
+  devices: [Device!]
+  accounts: [Account!]
+  employments: [CustomerEmploymentDataResponse!]
+  profiles: Profiles
+  acceptedDocuments: [AcceptedDocument!]
+  dateOfBirth: String
+  placeOfBirth: String
+  gender: String
+  nationality: String
+  hasRetailAccount: Boolean
+  hasSmeAccount: Boolean
+  mailingAddressSameAsResidence: Boolean
+  addresses: [Address!]
+  iam: Iam
+  identityVerifications: [IdentityVerificationsResponse!]
+}
+
+type CustomerDetailsResponseNew {
+  id: ID
+  createdAt: Date
+  updatedAt: Date
+  firstName: String
+  lastName: String
+  nickname: String
+  phoneNumber: String
+  email: String
+  nric: String
+  username: String @deprecated(reason: "Field is no longer available.")
+  status: String @deprecated(reason: "Field is no longer available.")
+  statuses: CustomerStatuses
+  type: String
+  mobilePreferences: MobilePreferences
+  devices: [Device!]
+  accounts: [Account!]
+  employments: [CustomerEmploymentDataResponseNew!]
+  profiles: Profiles
+  acceptedDocuments: [AcceptedDocument!]
+  dateOfBirth: String
+  placeOfBirth: String
+  gender: String
+  nationality: String
+  hasRetailAccount: Boolean
+  hasSmeAccount: Boolean
+  mailingAddressSameAsResidence: Boolean
+  addresses: [Address!]
+  iam: Iam
+  identityVerifications: [IdentityVerificationsResponse!]
+}
+
+type IdentityVerificationsResponse {
+  identityReferenceId: String!
+  startVerificationDate: Date!
+  status: String!
+  documentType: String
+  documentSubtype: String
+  documentCountry: String
+}
+
+type Iam {
+  username: String
+  pingOneId: String
+  secureWord: String @deprecated(reason: "Field is no longer available.")
+}
+
+type Address {
+  id: Int
+  line1: String
+  line2: String
+  line3: String
+  line4: String
+  line5: String
+  countryCode: String!
+  city: String!
+  postalCode: String!
+  subdivision: String!
+  type: AddressEnum!
+}
+
+type GetCustomerDetailsResponse {
+  customer: CustomerDetailsResponseNew
+}
+
+type MobilePreferences {
+  pushNotificationsAllowed: Boolean
+  marketingEmailFlag: Boolean
+  marketingPhoneCallFlag: Boolean
+  marketingSmsFlag: Boolean
+  marketingPushFlag: Boolean
+}
+
+type CustomerEmploymentDataResponse {
+  id: Int
+  employer: String
+  employmentType: String!
+  employmentSector: String
+  occupation: String
+  annualIncomeBracket: String
+  employerName: String @deprecated(reason: "Use employer field.")
+}
+
+type CreateIamAccountResponse {
+  pingoneUserId: String
+  requestId: String
+}
+
+type OtpValidationResponse {
+  status: OtpValidationStatus
+  requestId: String
+}
+
+type CheckUsernameUniquenessResponse {
+  usernameIsUnique: Boolean
 }
 
 type DepositAccount {

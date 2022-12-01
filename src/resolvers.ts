@@ -6,7 +6,7 @@ import { resolvers as ownResolvers } from "./features";
 export const resolvers: Resolvers = ownResolvers.reduce((merged, resolver) => {
   Object.entries(resolver).forEach(
     ([group, functions]: [keyof Resolvers<Context>, any]) => {
-      if (!merged[group]) merged[group] = {};
+      if (!merged[group]) merged[group] = {} as any;
       merged[group] = {
         ...merged[group],
         ...functions,

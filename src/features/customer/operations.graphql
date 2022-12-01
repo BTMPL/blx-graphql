@@ -1,0 +1,89 @@
+type Query {
+  checkUsernameUniqueness(username: String!): CheckUsernameUniquenessResponse
+}
+
+type Mutation {
+  createInitialCustomer(
+    customerMobileInput: CustomerMobileDeviceInput!
+  ): CreateCustomerResponse!
+  createIamAccount(
+    iamAccountInput: CreateIamAccountInput!
+  ): CreateIamAccountResponse!
+  storePersonalDetails(
+    personalDetailsInput: PersonalDetailsInput!
+  ): PersonalDetailsResponse!
+  validateOtp(otpValidationInput: OtpValidationInput!): OtpValidationResponse!
+}
+
+input CreateIamAccountInput {
+  customerId: String!
+  email: String
+  username: String
+  password: String
+  secureword: String
+  phoneNumber: String
+}
+
+input PersonalDetailsInput {
+  customerId: String!
+  mobilePreferences: MobilePreferencesInput!
+  employment: SaveEmploymentDataInput!
+  profiles: ProfilesInput!
+  acceptedDocuments: [DocumentIdInput!]!
+  mailingAddress: AddressInput
+  mailingAddressSameAsResidence: Boolean!
+  email: String
+  nickname: String
+}
+
+input MobilePreferencesInput {
+  pushNotificationsAllowed: Boolean
+  marketingEmailFlag: Boolean
+  marketingPhoneCallFlag: Boolean
+  marketingSmsFlag: Boolean
+  marketingPushFlag: Boolean
+}
+
+input SaveEmploymentDataInput {
+  employer: String
+  employmentType: EmploymentType!
+  employmentSector: String
+  occupation: String
+  annualIncomeBracket: AnnualIncomeBracket
+}
+input ProfilesInput {
+  maritalStatus: String
+  ethnicity: String
+  accountSettingUpReasons: [String!]
+}
+
+input DocumentIdInput {
+  documentId: Int!
+}
+
+input AddressInput {
+  line1: String
+  line2: String
+  line3: String
+  line4: String
+  line5: String
+  countryCode: String!
+  city: String!
+  postalCode: String!
+  subdivision: String!
+  type: AddressEnum!
+}
+
+input OtpValidationInput {
+  customerId: String!
+  phoneNumber: String!
+  otp: String!
+  deviceInstallationId: String!
+}
+
+input CustomerMobileDeviceInput {
+  phoneNumber: String!
+  deviceOs: String!
+  deviceModel: String!
+  deviceInstallationId: String
+}
