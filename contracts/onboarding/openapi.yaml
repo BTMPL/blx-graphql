@@ -1,0 +1,254 @@
+openapi: 3.0.3
+
+info:
+  title: Onboarding service API
+  version: 1.0.0
+  description: The onboarding service API
+
+tags:
+  - name: Onboarding
+    description: Operations related to Onboarding
+
+servers:
+  - url: http://localhost:8080/onboarding-service/v1
+    description: local server
+
+paths:
+  /trigger-offboarding:
+    post:
+      tags:
+        - CustomerOffboarding
+      summary: Trigger process of offboarding
+      description: Trigger process of offboarding
+      operationId: triggerOffboarding
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Unique parameter to satisfy idempotency
+      requestBody:
+        description: Details of offboarding reason
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/OffboardingRequest'
+      responses:
+        '200':
+          description: OK
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /validate-otp:
+    post:
+      tags:
+        - PhoneNumberVerification
+      summary: Validates the OTP for customer's phone number verification
+      description: Validates the OTP for customer's phone number verification
+      operationId: validateOtp
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Unique parameter to satisfy idempotency
+      requestBody:
+        description: Details of customer to validate OTP verification
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/OtpValidationRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/OtpValidationResponse'
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /ineligible-customers:
+    post:
+      tags:
+        - customers
+      summary: Creates a new (ineligible) customer
+      description: Creates ineligible customer - sets it's status as "INELIGIBLE"
+      operationId: createIneligibleCustomer
+      requestBody:
+        description: Data of the customer to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/CustomerCreationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/CustomerCreatedResponse'
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /initial-customers:
+    post:
+      tags:
+        - customers
+      summary: Creates a new customer
+      description: Creates new customer - sets it's status as "IDENTITY_VERIFICATION_NOT_INITIATED"
+      operationId: createCustomerWithInitialData
+      requestBody:
+        description: Data of the customer to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/CustomerCreationRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            "application/json;version=1":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/CustomerCreatedResponse'
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /identity-verification:
+    post:
+      tags:
+        - IdentityVerification
+      summary: Store data about planned identity verification
+      description: Store data about planned identity verification
+      operationId: saveIdentityVerificationId
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+      requestBody:
+        description: Basics data about verification
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/IdentityVerificationRequest'
+      responses:
+        '202':
+          description: Accepted
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /create-iam-account:
+    post:
+      tags:
+        - IamAccount
+      summary: Create IAM Account
+      description: Create IAM Account
+      operationId: createIamAccount
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Unique parameter to satisfy idempotency
+      requestBody:
+        description: Account to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/IamRequest'
+      responses:
+        '201':
+          description: Created
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/IamResponse'
+        '401':
+          $ref: './schemas/responses/response.yaml#/components/responses/UnauthorizedError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'
+
+  /personal-details:
+    post:
+      tags:
+        - PersonalDetails
+      summary: Store Personal Details
+      description: Store Personal Details
+      operationId: storePersonalDetails
+      parameters:
+        - in: header
+          name: X-Request-ID
+          schema:
+            type: string
+            format: uuid
+          required: true
+          description: Unique parameter to satisfy idempotency
+      requestBody:
+        description: Personal Details
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: './schemas/requests/request.yaml#/components/schemas/StorePersonalDetailsRequest'
+      responses:
+        '201':
+          description: Created
+        '400':
+          $ref: './schemas/generic/errors.yaml#/components/responses/BadRequest'
+        '401':
+          $ref: './schemas/generic/errors.yaml#/components/responses/Unauthenticated'
+        '500':
+          $ref: './schemas/generic/errors.yaml#/components/responses/InternalServerError'
+        default:
+          description: Error
+          content:
+            "application/problem+json":
+              schema:
+                $ref: './schemas/responses/response.yaml#/components/schemas/Problem'

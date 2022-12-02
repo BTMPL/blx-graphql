@@ -1,4 +1,4 @@
-import { Document } from "../../../generated/graphql";
+import { Document } from "../../../generated/contracts/dcr/model/models";
 import { config } from "../../config";
 import { AuthenticatedRESTDataSource } from "../../dataSource";
 

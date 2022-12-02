@@ -16,6 +16,8 @@ enum CustomerOverallStatus {
   FAILED
   PROSPECT
   ARCHIVED
+  OFFBOARDING_PENDING
+  OFFBOARDED
 }
 
 enum CustomerAccountStatus {

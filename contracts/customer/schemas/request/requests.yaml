@@ -1,0 +1,457 @@
+components:
+  schemas:
+    CreateSmeCustomerRequest:
+      type: object
+      title: "Sme customer data"
+      properties:
+        customerId:
+          type: string
+          description: "Id of new created user"
+          example: "1635944521024644"
+        email:
+          type: string
+          description: "Email of new created user"
+          example: "foobar@bar.com"
+        phoneNumber:
+          type: string
+          description: "Customer's phone number"
+          minLength: 8
+          maxLength: 18
+          example: "+60 123 123 132"
+        device:
+          type: object
+          description: "Device data"
+          $ref: '#/components/schemas/SmeCustomerDeviceRequest'
+        customerType:
+          type: string
+          description: "Customer type"
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/CustomerType'
+      required:
+        - customerType
+
+    SmeCustomerDeviceRequest:
+      type: object
+      title: "Device data"
+      properties:
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          minLength: 1
+          example: "iOS 14"
+          nullable: false
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          minLength: 1
+          example: "iPhone X"
+          nullable: false
+        deviceInstallationId:
+          type: string
+          description: "Device installation id"
+          minLength: 1
+          example: "a346d8d9-84a0-401f-84bd-233dcf83c4bb"
+          nullable: false
+        deviceStatus:
+          type: string
+          description: "Device initial status"
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/DeviceStatus'
+      required:
+        - deviceOs
+        - deviceModel
+        - deviceInstallationId
+        - deviceStatus
+
+
+    SmeRequest:
+      type: object
+      title: "Smes body request"
+      properties:
+        smeId:
+          type: string
+          description: "SMES ID"
+          example: "1234567890"
+        brn:
+          type: string
+          description: "BRN ID"
+        name:
+          type: string
+          description: "Name of smes"
+        localName:
+          type: string
+          description: "Local name of smes"
+        abbreviation:
+          type: string
+          description: "Abbreviation of smes"
+        countryCode:
+          type: string
+          description: "Country code of smes"
+        countrySubdivisionCode:
+          type: string
+          description: "Country subdivision code of smes"
+        businessType:
+          type: string
+          description: "Business type of smes"
+          enum:
+            - PRIVATE_LIMITED_COMPANY
+            - SOLE_PROPRIETORSHIP
+            - PARTNERSHIP
+      required:
+        - brn
+        - name
+        - countryCode
+        - businessType
+
+    SmeCustomerRequest:
+      type: object
+      title: "Customer sme request"
+      properties:
+        customerId:
+          type: string
+          description: "Customer id to link sme"
+          example: "111"
+        customerRoles:
+          type: array
+          items:
+            type: string
+        openDate:
+          type: string
+          format: date
+          description: Open date
+          example: "2021-01-30"
+        closeDate:
+          type: string
+          format: date
+          description: Open date
+          example: "2021-01-30"
+        ownershipPercentage:
+          type: integer
+          description: Ownership percentage
+          example: 20
+      required:
+        - customerId
+        - customerRoles
+
+    ManualSnapshotRequest:
+      type: object
+      title: "Customer statuses request"
+      properties:
+        customers:
+          type: array
+          description: "Customer's ids to send snapshot"
+          items:
+            type: string
+      required:
+        - customers
+
+    CustomerUpdateRequest:
+      type: object
+      title: "Email update request"
+      properties:
+        email:
+          type: string
+          description: "Email to update"
+          example: "newbetteremail@op.pl"
+        nickname:
+          type: string
+          description: "Nickname to update"
+          example: "gerwazy997"
+
+    MailingAddressRequest:
+      type: object
+      title: "Customer mailing address update request"
+      properties:
+        address:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/Address'
+        mailingSameAsResidence:
+          type: boolean
+          description: "Customer has same mailing address as residence"
+          example: true
+
+    CreateSmeAddressesRequest:
+      type: object
+      title: "Create addresses for smes"
+      properties:
+        mailingSameAsResidence:
+          type: boolean
+          description: "Customer has same mailing address as residence"
+          example: true
+        addressses:
+          type: array
+          items:
+            $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/Address'
+          minItems: 1
+          maxItems: 2
+      required:
+        - addressses
+        - mailingSameAsResidence
+
+
+    CustomerStatusRequest:
+      type: object
+      title: "Customer statuses request"
+      properties:
+        statusType:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/CustomerStatusType'
+        statusValue:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/CustomerStatusValue'
+        comment:
+          description: 'Comment'
+          type: string
+          example: "Test change"
+      required:
+        - statusType
+        - statusValue
+
+    CustomerStatusesRequest:
+      type: array
+      title: "Customer statuses request"
+      items:
+        $ref: '#/components/schemas/CustomerStatusRequest'
+
+    CustomerMobilePreferencesRequest:
+      type: object
+      title: "Mobile preferences updates"
+      properties:
+        updates:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/MobilePreferences'
+
+    CustomerProfilesRequest:
+      type: object
+      title: "Profiles updates"
+      properties:
+        updates:
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/Profiles'
+
+    SmeProfilesUpdateRequest:
+      type: object
+      title: "Sme profiles partly update"
+      properties:
+        noOfEmployees:
+          type: string
+          description: "Number of employees of sme"
+          example: 5
+        annualSalesTurnover:
+          type: string
+          description: "Annual sales turnover of sme"
+          example: 10000
+        bumiputeraStatus:
+          description: 'Bumiputera status of smes profile'
+          type: string
+          $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/BumiputeraStatus'
+        businessActivitiesCountries:
+          type: array
+          items:
+            type: string
+            description: "Business activity country"
+            example: "USA"
+        countriesOfSupplier:
+          type: array
+          items:
+            type: string
+            description: "Supplier country"
+            example: "USA"
+        businessEmailAddress:
+          type: string
+          description: "Email of sme"
+          example: "bussinessEmail123@email.mys"
+        description:
+          type: string
+          description: "Description"
+          example: "Some description"
+        businessSector:
+          type: string
+          description: "Business sector"
+          example: "sector"
+        businessSubSector:
+          type: string
+          description: "Business sub-sector"
+          example: "sub-sector"
+        oldBrn:
+          type: string
+          description: "Old brn"
+          example: "1234567890"
+        formerName:
+          type: string
+          description: "Former name"
+          example: "1234567890"
+        residence:
+          type: string
+          description: "Residence"
+          example: "MYS"
+        mainRegistration:
+          type: string
+          description: "Main registration- registration type"
+          example: "RegistrationType"
+        issuePlace:
+          type: string
+          description: "Issue place - country"
+          example: "MYS"
+        fatcaData:
+          type: string
+          description: "Bnm Ccc"
+          example: "Ccc"
+        lastKycDate:
+          type: string
+          format: date
+          description: "Last Kyc date"
+          example: "2022-01-01"
+        dateOfEstablishment:
+          type: string
+          format: date
+          description: "Date of establishment"
+          example: "2022-01-01"
+        presentedDocuments:
+          type: array
+          items:
+            type: string
+            description: "Presented documents"
+            example: "ID OF COMPANY BOARD OF DIRECTOR"
+        taxResidences:
+          type: array
+          items:
+            $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/SmeTaxResidency'
+
+    CreateCustomerRequest:
+      type: object
+      title: "Basic customer data"
+      properties:
+        phoneNumber:
+          type: string
+          description: "Customer's phone number"
+          minLength: 8
+          maxLength: 18
+          example: "+60 123 123 132"
+          nullable: false
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          minLength: 1
+          example: "iOS 14"
+          nullable: false
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          minLength: 1
+          example: "iPhone X"
+          nullable: false
+        deviceInstallationId:
+          type: string
+          description: "Device installation id"
+          minLength: 1
+          example: "a346d8d9-84a0-401f-84bd-233dcf83c4bb"
+          nullable: false
+        deviceStatus:
+          type: string
+          description: "Device initial status"
+          example: "ACTIVE"
+        customerStatuses:
+          $ref: '#/components/schemas/CustomerStatusesRequest'
+      required:
+        - phoneNumber
+        - deviceOs
+        - deviceModel
+        - deviceInstallationId
+        - deviceStatus
+        - customerStatuses
+
+    IdentityVerificationRequest:
+      type: object
+      title: "Basic customer data"
+      properties:
+        identityReferenceId:
+          type: string
+          example: "533f307b-1af7-4ab9-9a2f-62d657bacf49"
+      required:
+        - identityReferenceId
+
+    ChangePhonenumberRequest:
+      type: object
+      title: "Change phone number request"
+      properties:
+        newNumber:
+          type: string
+          description: "Potential new phone number for customer"
+          example: "+48 531 121 902"
+      required:
+        - newNumber
+
+    CustomerEmploymentUpdateRequest:
+      type: object
+      title: "Customer's employment"
+      properties:
+        annualIncomeBracket:
+          type: string
+          description: "Annual income bracket"
+          enum:
+            - LESS_THAN_RM12000
+            - RM12000_RM17999
+            - RM18000_RM23999
+            - RM24000_RM35999
+            - RM36000_RM47999
+            - RM48000_RM71999
+            - RM72000_RM95999
+            - RM96000_RM119999
+            - RM120000_AND_ABOVE
+      required:
+        - annualIncomeBracket
+
+    CustomerEmploymentDataRequest:
+      type: object
+      title: "Customer's employment creation data"
+      properties:
+        employer:
+          type: string
+          description: "Customer's employer"
+          example: "GFT"
+        employmentType:
+          type: string
+          description: "Employment type"
+          example: "contract"
+        employmentSector:
+          type: string
+          description: "Employment sector"
+          example: "financial"
+        occupation:
+          type: string
+          description: "Customer's occupation"
+          example: "manager"
+        annualIncomeBracket:
+          type: string
+          description: "Customer's annual income bracket"
+          example: "10.000-50.000"
+      required:
+        - employmentType
+
+    AcceptedDocumentsRequest:
+      type: array
+      title: "documents ids"
+      items:
+        $ref: '../../schemas/generic/genericTypes.yaml#/components/schemas/DocumentId'
+
+
+    DeviceRequest:
+      type: object
+      title: "Device data"
+      properties:
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          minLength: 1
+          example: "iOS 14"
+          nullable: false
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          minLength: 1
+          example: "iPhone X"
+          nullable: false
+        deviceInstallationId:
+          type: string
+          description: "Device installation id"
+          minLength: 1
+          example: "a346d8d9-84a0-401f-84bd-233dcf83c4bb"
+          nullable: false
+      required:
+        - deviceOs
+        - deviceModel
+        - deviceInstallationId

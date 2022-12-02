@@ -1,0 +1,182 @@
+components:
+  schemas:
+    StorePersonalDetailsRequest:
+      type: object
+      title: 'Store personal details request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          example: '123'
+        nickname:
+          type: string
+          description: 'Customer nickname'
+          example: "Frodo123"
+        email:
+          type: string
+          description: 'Customer email'
+          example: "ringHolder123@email.com"
+        mobilePreferences:
+          $ref: './../../schemas/generic/genericTypes.yaml#/components/schemas/MobilePreferences'
+        employment:
+          $ref: './../../schemas/generic/genericTypes.yaml#/components/schemas/EmploymentData'
+        acceptedDocuments:
+          type: array
+          title: 'Customer accepted documents'
+          items:
+            $ref: './../../schemas/generic/genericTypes.yaml#/components/schemas/AcceptedDocument'
+        mailingAddressSameAsResidence:
+          type: boolean
+          description: "Mailing address same as residence"
+          example: true
+        mailingAddress:
+          $ref: './../../schemas/generic/genericTypes.yaml#/components/schemas/Address'
+        profiles:
+          $ref: './../../schemas/generic/genericTypes.yaml#/components/schemas/Profiles'
+      required:
+        - customerId
+        - mobilePreferences
+        - employment
+        - acceptedDocuments
+        - mailingAddressSameAsResidence
+        - profiles
+
+    IamRequest:
+      type: object
+      title: 'Cbs account request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          minLength: 1
+          example: '111222233334444'
+          nullable: false
+        email:
+          type: string
+          description: "Customer's email"
+          minLength: 1
+          example: "customerdemo2@example.com"
+          nullable: false
+        username:
+          type: string
+          description: "Customer's username"
+          minLength: 1
+          example: "testinguser"
+          nullable: false
+        password:
+          type: string
+          description: "Customer's password"
+          minLength: 1
+          example: "4Science!"
+          nullable: false
+        secureword:
+          type: string
+          description: "Customer's secureword"
+          minLength: 1
+          example: "somethingrandom"
+          nullable: false
+        phoneNumber:
+          type: string
+          description: "Customer's phone number"
+          minLength: 8
+          maxLength: 18
+          example: "+60 123 123 132"
+          nullable: false
+      required:
+        - customerId
+
+    IdentityVerificationRequest:
+      type: object
+      title: 'Indetity verification request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          example: '123'
+        scanReference:
+          type: string
+          description: 'Scan reference id'
+          example: '123123123123231'
+      required:
+        - customerId
+        - scanReference
+
+    CustomerCreationRequest:
+      type: object
+      title: "Basic customer data"
+      properties:
+        phoneNumber:
+          type: string
+          description: "Customer's phone number"
+          minLength: 8
+          maxLength: 18
+          example: "+60 123 123 132"
+          nullable: false
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          minLength: 1
+          example: "iOS 14"
+          nullable: false
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          minLength: 1
+          example: "iPhone X"
+          nullable: false
+        deviceInstallationId:
+          type: string
+          description: "Device installation id"
+          minLength: 1
+          example: "a346d8d9-84a0-401f-84bd-233dcf83c4bb"
+      required:
+        - phoneNumber
+        - deviceOs
+        - deviceModel
+
+    OffboardingRequest:
+      type: object
+      title: 'Offboarding Request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          example: '123'
+        reason:
+          type: string
+          description: 'Reason of offboarding'
+          example: 'CRR changed to prohibited'
+        triggeredBy:
+          type: string
+          description: 'Information who (what service / what system / what bounded context) triggered the process'
+          example: 'framl'
+      required:
+        - customerId
+        - reason
+        - triggeredBy
+
+    OtpValidationRequest:
+      type: object
+      title: 'Validate OTP Request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          example: '123'
+        phoneNumber:
+          type: string
+          description: 'Phone number'
+          example: '+1 123 123 123'
+        otp:
+          type: string
+          description: 'OTP. The 4-10 character string being validated.'
+          example: '123456'
+        deviceInstallationId:
+          type: string
+          description: 'Device installation id.'
+          example: 'a346d8d9-84a0-401f-84bd-233dcf83c4bb'
+      required:
+        - customerId
+        - phoneNumber
+        - otp
+        - deviceInstallationId

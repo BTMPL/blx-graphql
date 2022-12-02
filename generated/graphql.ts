@@ -38,7 +38,7 @@ export type Address = {
   __typename?: 'Address';
   city: Scalars['String'];
   countryCode: Scalars['String'];
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   line1?: Maybe<Scalars['String']>;
   line2?: Maybe<Scalars['String']>;
   line3?: Maybe<Scalars['String']>;
@@ -50,8 +50,8 @@ export type Address = {
 };
 
 export enum AddressEnum {
-  Mailing = 'MAILING',
-  Residential = 'RESIDENTIAL'
+  MAILING = 'MAILING',
+  RESIDENTIAL = 'RESIDENTIAL'
 }
 
 export type AddressInput = {
@@ -68,15 +68,15 @@ export type AddressInput = {
 };
 
 export enum AnnualIncomeBracket {
-  LessThanRm12000 = 'LESS_THAN_RM12000',
-  Rm12000Rm17999 = 'RM12000_RM17999',
-  Rm18000Rm23999 = 'RM18000_RM23999',
-  Rm24000Rm35999 = 'RM24000_RM35999',
-  Rm36000Rm47999 = 'RM36000_RM47999',
-  Rm48000Rm71999 = 'RM48000_RM71999',
-  Rm72000Rm95999 = 'RM72000_RM95999',
-  Rm96000Rm119999 = 'RM96000_RM119999',
-  Rm120000AndAbove = 'RM120000_AND_ABOVE'
+  LESS_THAN_RM12000 = 'LESS_THAN_RM12000',
+  RM12000_RM17999 = 'RM12000_RM17999',
+  RM18000_RM23999 = 'RM18000_RM23999',
+  RM24000_RM35999 = 'RM24000_RM35999',
+  RM36000_RM47999 = 'RM36000_RM47999',
+  RM48000_RM71999 = 'RM48000_RM71999',
+  RM72000_RM95999 = 'RM72000_RM95999',
+  RM96000_RM119999 = 'RM96000_RM119999',
+  RM120000_AND_ABOVE = 'RM120000_AND_ABOVE'
 }
 
 export type CheckUsernameUniquenessResponse = {
@@ -107,19 +107,19 @@ export type CreateIamAccountResponse = {
 };
 
 export enum CustomerAccountStatus {
-  Active = 'ACTIVE',
-  Blocked = 'BLOCKED',
-  Closed = 'CLOSED',
-  Dormant = 'DORMANT',
-  Inactive = 'INACTIVE',
-  InitialisationFailure = 'INITIALISATION_FAILURE',
-  Initiated = 'INITIATED',
-  PendingClosure = 'PENDING_CLOSURE'
+  ACTIVE = 'ACTIVE',
+  BLOCKED = 'BLOCKED',
+  CLOSED = 'CLOSED',
+  DORMANT = 'DORMANT',
+  INACTIVE = 'INACTIVE',
+  INITIALISATION_FAILURE = 'INITIALISATION_FAILURE',
+  INITIATED = 'INITIATED',
+  PENDING_CLOSURE = 'PENDING_CLOSURE'
 }
 
 export enum CustomerDepositAccountStatus {
-  Active = 'ACTIVE',
-  Inactive = 'INACTIVE'
+  ACTIVE = 'ACTIVE',
+  INACTIVE = 'INACTIVE'
 }
 
 export type CustomerDetailsResponse = {
@@ -200,7 +200,7 @@ export type CustomerEmploymentDataResponse = {
   employerName?: Maybe<Scalars['String']>;
   employmentSector?: Maybe<Scalars['String']>;
   employmentType: Scalars['String'];
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   occupation?: Maybe<Scalars['String']>;
 };
 
@@ -212,7 +212,7 @@ export type CustomerEmploymentDataResponseNew = {
   employerName?: Maybe<Scalars['String']>;
   employmentSector?: Maybe<Scalars['String']>;
   employmentType: ValuesEmployment;
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   occupation?: Maybe<Scalars['String']>;
 };
 
@@ -236,18 +236,20 @@ export type CustomerMobilePreferencesMarketingChannels = {
 };
 
 export enum CustomerOverallStatus {
-  Active = 'ACTIVE',
-  Archived = 'ARCHIVED',
-  Failed = 'FAILED',
-  Onboarded = 'ONBOARDED',
-  Prospect = 'PROSPECT'
+  ACTIVE = 'ACTIVE',
+  ARCHIVED = 'ARCHIVED',
+  FAILED = 'FAILED',
+  OFFBOARDED = 'OFFBOARDED',
+  OFFBOARDING_PENDING = 'OFFBOARDING_PENDING',
+  ONBOARDED = 'ONBOARDED',
+  PROSPECT = 'PROSPECT'
 }
 
 export enum CustomerStatusValue {
-  Failed = 'FAILED',
-  Initiated = 'INITIATED',
-  NotInitiated = 'NOT_INITIATED',
-  Passed = 'PASSED'
+  FAILED = 'FAILED',
+  INITIATED = 'INITIATED',
+  NOT_INITIATED = 'NOT_INITIATED',
+  PASSED = 'PASSED'
 }
 
 export type CustomerStatuses = {
@@ -303,17 +305,17 @@ export type Employment = {
 };
 
 export enum EmploymentType {
-  Employer = 'EMPLOYER',
-  GovernmentEmployee = 'GOVERNMENT_EMPLOYEE',
-  HousewifeHousehusband = 'HOUSEWIFE_HOUSEHUSBAND',
-  OtherOutsideLabourForce = 'OTHER_OUTSIDE_LABOUR_FORCE',
-  PrivateEmployee = 'PRIVATE_EMPLOYEE',
-  ReportingEntityEmployee = 'REPORTING_ENTITY_EMPLOYEE',
-  Retiree = 'RETIREE',
-  SelfEmployed = 'SELF_EMPLOYED',
-  Student = 'STUDENT',
-  Unemployed = 'UNEMPLOYED',
-  UnpaidFamilyWorker = 'UNPAID_FAMILY_WORKER'
+  EMPLOYER = 'EMPLOYER',
+  GOVERNMENT_EMPLOYEE = 'GOVERNMENT_EMPLOYEE',
+  HOUSEWIFE_HOUSEHUSBAND = 'HOUSEWIFE_HOUSEHUSBAND',
+  OTHER_OUTSIDE_LABOUR_FORCE = 'OTHER_OUTSIDE_LABOUR_FORCE',
+  PRIVATE_EMPLOYEE = 'PRIVATE_EMPLOYEE',
+  REPORTING_ENTITY_EMPLOYEE = 'REPORTING_ENTITY_EMPLOYEE',
+  RETIREE = 'RETIREE',
+  SELF_EMPLOYED = 'SELF_EMPLOYED',
+  STUDENT = 'STUDENT',
+  UNEMPLOYED = 'UNEMPLOYED',
+  UNPAID_FAMILY_WORKER = 'UNPAID_FAMILY_WORKER'
 }
 
 export type GetCustomerDetailsResponse = {
@@ -398,9 +400,9 @@ export type OtpValidationResponse = {
 };
 
 export enum OtpValidationStatus {
-  Approved = 'APPROVED',
-  ApprovedAlreadyExists = 'APPROVED_ALREADY_EXISTS',
-  Failed = 'FAILED'
+  APPROVED = 'APPROVED',
+  APPROVED_ALREADY_EXISTS = 'APPROVED_ALREADY_EXISTS',
+  FAILED = 'FAILED'
 }
 
 export type PersonalDetailsInput = {
@@ -664,7 +666,7 @@ export type AccountResolvers<ContextType = Context, ParentType extends Resolvers
 export type AddressResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Address'] = ResolversParentTypes['Address']> = {
   city?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   countryCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   line1?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   line2?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   line3?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -765,7 +767,7 @@ export type CustomerEmploymentDataResponseResolvers<ContextType = Context, Paren
   employerName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   employmentSector?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   employmentType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   occupation?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -776,7 +778,7 @@ export type CustomerEmploymentDataResponseNewResolvers<ContextType = Context, Pa
   employerName?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   employmentSector?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   employmentType?: Resolver<ResolversTypes['ValuesEmployment'], ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   occupation?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };

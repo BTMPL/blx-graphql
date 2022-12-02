@@ -1,16 +1,52 @@
+import { CustomerDetailsRs } from "../../../generated/contracts/customer/model/models";
 import {
+  AddressEnum,
   CheckUsernameUniquenessResponse,
   CreateCustomerResponse,
   CreateIamAccountResponse,
+  CustomerAccountStatus,
+  CustomerDepositAccountStatus,
+  CustomerDetailsResponse,
+  CustomerOverallStatus,
+  CustomerStatusValue,
   MutationCreateIamAccountArgs,
   MutationCreateInitialCustomerArgs,
   MutationStorePersonalDetailsArgs,
   MutationValidateOtpArgs,
   OtpValidationResponse,
+  OtpValidationStatus,
   PersonalDetailsResponse,
   QueryCheckUsernameUniquenessArgs,
 } from "../../../generated/graphql";
 import { Context } from "../../context/types";
+
+function facadeCustomer(customer: CustomerDetailsRs): CustomerDetailsResponse {
+  return {
+    ...customer,
+    addresses: customer.addresses.map((address) => {
+      return {
+        ...address,
+        type: AddressEnum[address.type],
+      };
+    }),
+    accounts: customer.accounts.map((account) => {
+      return {
+        ...account,
+        status: CustomerAccountStatus[account.status],
+      };
+    }),
+    statuses: {
+      eligibility: CustomerStatusValue[customer.statuses.eligibility],
+      identityVerifiaction:
+        CustomerStatusValue[customer.statuses.identityVerifiaction],
+      crr: CustomerStatusValue[customer.statuses.crr],
+      cbs: CustomerStatusValue[customer.statuses.cbs],
+      depositAccounts:
+        CustomerDepositAccountStatus[customer.statuses.depositAccounts],
+      overall: CustomerOverallStatus[customer.statuses.overall],
+    },
+  };
+}
 
 export const resolvers = {
   Query: {
@@ -40,7 +76,7 @@ export const resolvers = {
         customerId: id,
         customer: {
           id,
-          ...customer,
+          ...facadeCustomer(customer),
         },
       };
     },
@@ -67,10 +103,12 @@ export const resolvers = {
       args: MutationStorePersonalDetailsArgs,
       context: Context
     ): Promise<PersonalDetailsResponse> => {
+      const customer = await context.dataSources.customer.getCustomerById(
+        args.personalDetailsInput.customerId
+      );
+
       return {
-        customer: await context.dataSources.customer.getCustomerById(
-          args.personalDetailsInput.customerId
-        ),
+        customer: facadeCustomer(customer),
         requestId: "String",
       };
     },
@@ -87,7 +125,7 @@ export const resolvers = {
       });
 
       return {
-        status: verification.status,
+        status: OtpValidationStatus[verification.status],
       };
     },
   },

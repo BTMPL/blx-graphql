@@ -1,0 +1,208 @@
+openapi: 3.0.3
+
+info:
+  title: Dynamic content retrieval API
+  version: 1.0.0
+  description: API will allow performing operations related to dynamic content retrieval service
+
+tags:
+  - name: DynamicContentRetrieval
+    description: Operations related to Dynamic content retrieval
+
+servers:
+  - url: http://localhost:8080/api/v1
+    description: local server
+
+paths:
+  /code2country/{country}/{postalCode}:
+    get:
+      tags:
+        - DCR Service
+      summary: Get address data
+      description: Get address data country, postalCode, city, subdivision
+      operationId: getAddressData
+      parameters:
+        - in: path
+          name: country
+          schema:
+            type: string
+          example: 'MYS'
+          required: true
+          description: "Country code"
+        - in: path
+          name: postalCode
+          schema:
+            type: string
+          example: "50480"
+          description: "Postal code"
+          required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/AddressDataRs'
+        '404':
+          description: Not found, Postal Code or Country are not stored in data base
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+
+  /documents:
+    get:
+      tags:
+        - Documents
+      summary: Get all documents
+      description: Get all documents
+      operationId: getDocuments
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: './schemas/response/responses.yaml#/components/schemas/Document'
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+
+  /occupations:
+    get:
+      tags:
+        - occupations
+      summary: Get all occupations
+      description: Get all occupations
+      operationId: getOccupation
+      parameters:
+        - in: query
+          name: enabledOnFe
+          schema:
+            type: boolean
+          example: true
+          required: false
+          description: "Should return only enabled for fe"
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: './schemas/response/responses.yaml#/components/schemas/Occupation'
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+
+  /occupations/{code}:
+    get:
+      tags:
+        - occupations
+      summary: Get occupation by code
+      description: Get occupation by code
+      operationId: getOccupationByCode
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          example: "DENTISTS"
+          required: true
+          description: "code of occupation"
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Occupation'
+        '404':
+          description: Not Found
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+
+  /employment-sectors:
+    get:
+      tags:
+        - sectors
+      summary: Get all sectors
+      description: Get all sectors
+      operationId: getSectors
+      parameters:
+        - in: query
+          name: enabledOnFe
+          schema:
+            type: boolean
+          example: true
+          required: false
+          description: "Should return only enabled for fe"
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                type: array
+                items:
+                  $ref: './schemas/response/responses.yaml#/components/schemas/EmploymentSector'
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+
+  /employment-sectors/{code}:
+    get:
+      tags:
+        - sectors
+      summary: Get sector by code
+      description: Get sector by code
+      operationId: getSectorByCode
+      parameters:
+        - in: path
+          name: code
+          schema:
+            type: string
+          example: "FINANCE"
+          required: true
+          description: "code of sector"
+      responses:
+        '200':
+          description: OK
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/EmploymentSector'
+        '404':
+          description: Not Found
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'
+        '500':
+          description: Error
+          content:
+            "application/json":
+              schema:
+                $ref: './schemas/response/responses.yaml#/components/schemas/Problem'

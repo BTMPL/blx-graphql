@@ -19,6 +19,8 @@ enum CustomerOverallStatus {
   FAILED
   PROSPECT
   ARCHIVED
+  OFFBOARDING_PENDING
+  OFFBOARDED
 }
 
 enum CustomerAccountStatus {
@@ -203,7 +205,7 @@ type Account {
 }
 
 type CustomerEmploymentDataResponseNew {
-  id: Int
+  id: ID
   employer: String
   employmentType: ValuesEmployment!
   employmentSector: String
@@ -331,7 +333,7 @@ type Iam {
 }
 
 type Address {
-  id: Int
+  id: ID
   line1: String
   line2: String
   line3: String
@@ -357,7 +359,7 @@ type MobilePreferences {
 }
 
 type CustomerEmploymentDataResponse {
-  id: Int
+  id: ID
   employer: String
   employmentType: String!
   employmentSector: String
