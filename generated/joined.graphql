@@ -72,6 +72,7 @@ enum OtpValidationStatus {
 type Query {
   checkUsernameUniqueness(username: String!): CheckUsernameUniquenessResponse
   depositAccount: [DepositAccount]
+  documents: [Document!]
 }
 
 type Mutation {
@@ -244,19 +245,10 @@ type Profiles {
 }
 
 type AcceptedDocument {
-  acceptedDocumentId: Int
+  acceptedDocumentId: ID
   acceptedDocumentString: String @deprecated(reason: "Field is no longer available.")
   acceptedDocumentDate: Date
   document: Document
-}
-
-type Document {
-  id: Int
-  url: String
-  title: String
-  version: Int
-  type: String
-  alias: String
 }
 
 type CustomerDetailsResponse {
@@ -392,6 +384,14 @@ type DepositAccount {
   id: ID!
   name: String!
   balance: Float!
+}
+
+type Document {
+  id: ID
+  url: String
+  title: String
+  version: Int
+  type: String
 }
 
 schema {

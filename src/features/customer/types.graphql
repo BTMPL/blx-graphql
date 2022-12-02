@@ -89,20 +89,11 @@ type Profiles {
 }
 
 type AcceptedDocument {
-  acceptedDocumentId: Int
+  acceptedDocumentId: ID
   acceptedDocumentString: String
     @deprecated(reason: "Field is no longer available.")
   acceptedDocumentDate: Date
   document: Document
-}
-
-type Document {
-  id: Int
-  url: String
-  title: String
-  version: Int
-  type: String
-  alias: String
 }
 
 type CustomerDetailsResponse {

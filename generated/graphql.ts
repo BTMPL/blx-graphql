@@ -21,7 +21,7 @@ export type Scalars = {
 export type AcceptedDocument = {
   __typename?: 'AcceptedDocument';
   acceptedDocumentDate?: Maybe<Scalars['Date']>;
-  acceptedDocumentId?: Maybe<Scalars['Int']>;
+  acceptedDocumentId?: Maybe<Scalars['ID']>;
   /** @deprecated Field is no longer available. */
   acceptedDocumentString?: Maybe<Scalars['String']>;
   document?: Maybe<Document>;
@@ -282,8 +282,7 @@ export type Device = {
 
 export type Document = {
   __typename?: 'Document';
-  alias?: Maybe<Scalars['String']>;
-  id?: Maybe<Scalars['Int']>;
+  id?: Maybe<Scalars['ID']>;
   title?: Maybe<Scalars['String']>;
   type?: Maybe<Scalars['String']>;
   url?: Maybe<Scalars['String']>;
@@ -449,6 +448,7 @@ export type Query = {
   __typename?: 'Query';
   checkUsernameUniqueness?: Maybe<CheckUsernameUniquenessResponse>;
   depositAccount?: Maybe<Array<Maybe<DepositAccount>>>;
+  documents?: Maybe<Array<Document>>;
 };
 
 
@@ -648,7 +648,7 @@ export type ResolversParentTypes = {
 
 export type AcceptedDocumentResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AcceptedDocument'] = ResolversParentTypes['AcceptedDocument']> = {
   acceptedDocumentDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
-  acceptedDocumentId?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  acceptedDocumentId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   acceptedDocumentString?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   document?: Resolver<Maybe<ResolversTypes['Document']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -827,8 +827,7 @@ export type DeviceResolvers<ContextType = Context, ParentType extends ResolversP
 };
 
 export type DocumentResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Document'] = ResolversParentTypes['Document']> = {
-  alias?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  id?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   title?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   url?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -912,6 +911,7 @@ export type ProfilesResolvers<ContextType = Context, ParentType extends Resolver
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   checkUsernameUniqueness?: Resolver<Maybe<ResolversTypes['CheckUsernameUniquenessResponse']>, ParentType, ContextType, RequireFields<QueryCheckUsernameUniquenessArgs, 'username'>>;
   depositAccount?: Resolver<Maybe<Array<Maybe<ResolversTypes['DepositAccount']>>>, ParentType, ContextType>;
+  documents?: Resolver<Maybe<Array<ResolversTypes['Document']>>, ParentType, ContextType>;
 };
 
 export type ValuesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Values'] = ResolversParentTypes['Values']> = {

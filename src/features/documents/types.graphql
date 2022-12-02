@@ -1,0 +1,7 @@
+type Document {
+  id: ID
+  url: String
+  title: String
+  version: Int
+  type: String
+}

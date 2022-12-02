@@ -21,8 +21,14 @@ export const config = {
     customer: {
       url: process.env.SERVICE_CUSTOMER_URL,
     },
+    onboarding: {
+      url: process.env.SERVICE_ONBOARDING_URL,
+    },
     depositAccout: {
       url: process.env.SERVICE_DEPOSIT_ACCOUNT_URL,
+    },
+    documents: {
+      url: process.env.SERVICE_DOCUMENTS_URL,
     },
   },
 };
