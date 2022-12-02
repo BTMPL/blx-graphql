@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import {
   RESTDataSource,
   WillSendRequestOptions,
@@ -26,6 +27,6 @@ export class AuthenticatedRESTDataSource extends RESTDataSource {
       request.headers["authorization"] = `Bearer ${this.token}`;
     }
 
-    request.headers["x-request-id"] = this.requestId;
+    request.headers["x-request-id"] = v4();
   }
 }
