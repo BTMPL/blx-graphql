@@ -1,3 +1,10 @@
+directive @auth(requires: Role = USER) on OBJECT | FIELD_DEFINITION
+
+enum Role {
+  USER
+  UNKNOWN
+}
+
 """Date custom scalar type"""
 scalar Date
 

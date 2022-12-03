@@ -34,14 +34,6 @@ export const isAuthorised = (token: string, role: string) => {
 export const authDirective = () => {
   const typeDirectiveArgumentMaps: Record<string, any> = {};
   return {
-    authDirectiveTypeDefs: `directive @auth(
-      requires: Role = USER,
-    ) on OBJECT | FIELD_DEFINITION
- 
-    enum Role {
-      USER
-      UNKNOWN
-    }`,
     authDirectiveTransformer: (schema: GraphQLSchema) =>
       mapSchema(schema, {
         [MapperKind.TYPE]: (type) => {

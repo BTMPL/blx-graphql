@@ -22,11 +22,11 @@ import { resolvers } from "./resolvers";
 import typeDefs from "./typedefs";
 import { config } from "./config";
 
-const { authDirectiveTypeDefs, authDirectiveTransformer } = authDirective();
+const { authDirectiveTransformer } = authDirective();
 
 const schema = authDirectiveTransformer(
   makeExecutableSchema({
-    typeDefs: [authDirectiveTypeDefs, typeDefs],
+    typeDefs: [typeDefs],
     resolvers: resolvers,
   })
 );
