@@ -14,9 +14,9 @@
 export type CustomerStatusType = 'ELIGIBILITY' | 'IDENTITY_VERIFICATION' | 'CRR' | 'CBS';
 
 export const CustomerStatusType = {
-    Eligibility: 'ELIGIBILITY' as CustomerStatusType,
-    IdentityVerification: 'IDENTITY_VERIFICATION' as CustomerStatusType,
-    Crr: 'CRR' as CustomerStatusType,
-    Cbs: 'CBS' as CustomerStatusType
+    ELIGIBILITY: 'ELIGIBILITY' as CustomerStatusType,
+    IDENTITY_VERIFICATION: 'IDENTITY_VERIFICATION' as CustomerStatusType,
+    CRR: 'CRR' as CustomerStatusType,
+    CBS: 'CBS' as CustomerStatusType
 };
 

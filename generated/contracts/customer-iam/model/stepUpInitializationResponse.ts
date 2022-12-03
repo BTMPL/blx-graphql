@@ -18,8 +18,8 @@ export interface StepUpInitializationResponse {
 export namespace StepUpInitializationResponse {
     export type StatusEnum = 'TOTP_REQUIRED' | 'OTP_REQUIRED';
     export const StatusEnum = {
-        TotpRequired: 'TOTP_REQUIRED' as StatusEnum,
-        OtpRequired: 'OTP_REQUIRED' as StatusEnum
+        TOTP_REQUIRED: 'TOTP_REQUIRED' as StatusEnum,
+        OTP_REQUIRED: 'OTP_REQUIRED' as StatusEnum
     };
 }
 

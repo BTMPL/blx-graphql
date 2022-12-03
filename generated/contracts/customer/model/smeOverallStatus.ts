@@ -14,9 +14,9 @@
 export type SmeOverallStatus = 'ONBOARDED' | 'ACTIVE' | 'FAILED' | 'PROSPECT';
 
 export const SmeOverallStatus = {
-    Onboarded: 'ONBOARDED' as SmeOverallStatus,
-    Active: 'ACTIVE' as SmeOverallStatus,
-    Failed: 'FAILED' as SmeOverallStatus,
-    Prospect: 'PROSPECT' as SmeOverallStatus
+    ONBOARDED: 'ONBOARDED' as SmeOverallStatus,
+    ACTIVE: 'ACTIVE' as SmeOverallStatus,
+    FAILED: 'FAILED' as SmeOverallStatus,
+    PROSPECT: 'PROSPECT' as SmeOverallStatus
 };
 

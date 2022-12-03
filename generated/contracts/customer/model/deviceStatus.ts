@@ -14,9 +14,9 @@
 export type DeviceStatus = 'UNVERIFIED' | 'ACTIVE_UNVERIFIED' | 'ACTIVE_VERIFIED' | 'INACTIVE_VERIFIED';
 
 export const DeviceStatus = {
-    Unverified: 'UNVERIFIED' as DeviceStatus,
-    ActiveUnverified: 'ACTIVE_UNVERIFIED' as DeviceStatus,
-    ActiveVerified: 'ACTIVE_VERIFIED' as DeviceStatus,
-    InactiveVerified: 'INACTIVE_VERIFIED' as DeviceStatus
+    UNVERIFIED: 'UNVERIFIED' as DeviceStatus,
+    ACTIVE_UNVERIFIED: 'ACTIVE_UNVERIFIED' as DeviceStatus,
+    ACTIVE_VERIFIED: 'ACTIVE_VERIFIED' as DeviceStatus,
+    INACTIVE_VERIFIED: 'INACTIVE_VERIFIED' as DeviceStatus
 };
 

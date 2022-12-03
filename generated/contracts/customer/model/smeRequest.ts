@@ -48,9 +48,9 @@ export interface SmeRequest {
 export namespace SmeRequest {
     export type BusinessTypeEnum = 'PRIVATE_LIMITED_COMPANY' | 'SOLE_PROPRIETORSHIP' | 'PARTNERSHIP';
     export const BusinessTypeEnum = {
-        PrivateLimitedCompany: 'PRIVATE_LIMITED_COMPANY' as BusinessTypeEnum,
-        SoleProprietorship: 'SOLE_PROPRIETORSHIP' as BusinessTypeEnum,
-        Partnership: 'PARTNERSHIP' as BusinessTypeEnum
+        PRIVATE_LIMITED_COMPANY: 'PRIVATE_LIMITED_COMPANY' as BusinessTypeEnum,
+        SOLE_PROPRIETORSHIP: 'SOLE_PROPRIETORSHIP' as BusinessTypeEnum,
+        PARTNERSHIP: 'PARTNERSHIP' as BusinessTypeEnum
     };
 }
 

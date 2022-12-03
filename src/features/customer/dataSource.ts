@@ -10,6 +10,7 @@ import {
   IamResponse,
   OtpValidationRequest,
   OtpValidationResponse,
+  StorePersonalDetailsRequest,
 } from "../../../generated/contracts/onboarding/model/models";
 import {
   CompleteLoginRequest,
@@ -115,5 +116,11 @@ export class OnboardingAPI extends AuthenticatedRESTDataSource {
       ...data,
       requestId: this.requestId,
     };
+  }
+
+  async storePersonalDetails(input: StorePersonalDetailsRequest) {
+    return this.post(`/v1/personal-detils`, {
+      body: input,
+    });
   }
 }

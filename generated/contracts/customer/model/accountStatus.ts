@@ -14,13 +14,13 @@
 export type AccountStatus = 'INITIATED' | 'INITIALISATION_FAILURE' | 'INACTIVE' | 'ACTIVE' | 'DORMANT' | 'BLOCKED' | 'PENDING_CLOSURE' | 'CLOSED';
 
 export const AccountStatus = {
-    Initiated: 'INITIATED' as AccountStatus,
-    InitialisationFailure: 'INITIALISATION_FAILURE' as AccountStatus,
-    Inactive: 'INACTIVE' as AccountStatus,
-    Active: 'ACTIVE' as AccountStatus,
-    Dormant: 'DORMANT' as AccountStatus,
-    Blocked: 'BLOCKED' as AccountStatus,
-    PendingClosure: 'PENDING_CLOSURE' as AccountStatus,
-    Closed: 'CLOSED' as AccountStatus
+    INITIATED: 'INITIATED' as AccountStatus,
+    INITIALISATION_FAILURE: 'INITIALISATION_FAILURE' as AccountStatus,
+    INACTIVE: 'INACTIVE' as AccountStatus,
+    ACTIVE: 'ACTIVE' as AccountStatus,
+    DORMANT: 'DORMANT' as AccountStatus,
+    BLOCKED: 'BLOCKED' as AccountStatus,
+    PENDING_CLOSURE: 'PENDING_CLOSURE' as AccountStatus,
+    CLOSED: 'CLOSED' as AccountStatus
 };
 

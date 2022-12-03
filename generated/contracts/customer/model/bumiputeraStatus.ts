@@ -14,9 +14,9 @@
 export type BumiputeraStatus = 'BUMIPUTERA_CONTROLLED' | 'NON_BUMIPUTERA_CONTROLLED' | 'NON_RESIDENT_CONTROLLED' | 'GOVERNMENT_CONTROLLED';
 
 export const BumiputeraStatus = {
-    BumiputeraControlled: 'BUMIPUTERA_CONTROLLED' as BumiputeraStatus,
-    NonBumiputeraControlled: 'NON_BUMIPUTERA_CONTROLLED' as BumiputeraStatus,
-    NonResidentControlled: 'NON_RESIDENT_CONTROLLED' as BumiputeraStatus,
-    GovernmentControlled: 'GOVERNMENT_CONTROLLED' as BumiputeraStatus
+    BUMIPUTERA_CONTROLLED: 'BUMIPUTERA_CONTROLLED' as BumiputeraStatus,
+    NON_BUMIPUTERA_CONTROLLED: 'NON_BUMIPUTERA_CONTROLLED' as BumiputeraStatus,
+    NON_RESIDENT_CONTROLLED: 'NON_RESIDENT_CONTROLLED' as BumiputeraStatus,
+    GOVERNMENT_CONTROLLED: 'GOVERNMENT_CONTROLLED' as BumiputeraStatus
 };
 

@@ -14,7 +14,7 @@
 export type CustomerDepositAccountStatus = 'ACTIVE' | 'INACTIVE';
 
 export const CustomerDepositAccountStatus = {
-    Active: 'ACTIVE' as CustomerDepositAccountStatus,
-    Inactive: 'INACTIVE' as CustomerDepositAccountStatus
+    ACTIVE: 'ACTIVE' as CustomerDepositAccountStatus,
+    INACTIVE: 'INACTIVE' as CustomerDepositAccountStatus
 };
 

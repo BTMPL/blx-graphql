@@ -20,15 +20,15 @@ export interface CustomerEmploymentUpdateRequest {
 export namespace CustomerEmploymentUpdateRequest {
     export type AnnualIncomeBracketEnum = 'LESS_THAN_RM12000' | 'RM12000_RM17999' | 'RM18000_RM23999' | 'RM24000_RM35999' | 'RM36000_RM47999' | 'RM48000_RM71999' | 'RM72000_RM95999' | 'RM96000_RM119999' | 'RM120000_AND_ABOVE';
     export const AnnualIncomeBracketEnum = {
-        LessThanRm12000: 'LESS_THAN_RM12000' as AnnualIncomeBracketEnum,
-        Rm12000Rm17999: 'RM12000_RM17999' as AnnualIncomeBracketEnum,
-        Rm18000Rm23999: 'RM18000_RM23999' as AnnualIncomeBracketEnum,
-        Rm24000Rm35999: 'RM24000_RM35999' as AnnualIncomeBracketEnum,
-        Rm36000Rm47999: 'RM36000_RM47999' as AnnualIncomeBracketEnum,
-        Rm48000Rm71999: 'RM48000_RM71999' as AnnualIncomeBracketEnum,
-        Rm72000Rm95999: 'RM72000_RM95999' as AnnualIncomeBracketEnum,
-        Rm96000Rm119999: 'RM96000_RM119999' as AnnualIncomeBracketEnum,
-        Rm120000AndAbove: 'RM120000_AND_ABOVE' as AnnualIncomeBracketEnum
+        LESS_THAN_RM12000: 'LESS_THAN_RM12000' as AnnualIncomeBracketEnum,
+        RM12000_RM17999: 'RM12000_RM17999' as AnnualIncomeBracketEnum,
+        RM18000_RM23999: 'RM18000_RM23999' as AnnualIncomeBracketEnum,
+        RM24000_RM35999: 'RM24000_RM35999' as AnnualIncomeBracketEnum,
+        RM36000_RM47999: 'RM36000_RM47999' as AnnualIncomeBracketEnum,
+        RM48000_RM71999: 'RM48000_RM71999' as AnnualIncomeBracketEnum,
+        RM72000_RM95999: 'RM72000_RM95999' as AnnualIncomeBracketEnum,
+        RM96000_RM119999: 'RM96000_RM119999' as AnnualIncomeBracketEnum,
+        RM120000_AND_ABOVE: 'RM120000_AND_ABOVE' as AnnualIncomeBracketEnum
     };
 }
 

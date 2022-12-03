@@ -20,9 +20,9 @@ export interface OtpValidationResponse {
 export namespace OtpValidationResponse {
     export type StatusEnum = 'FAILED' | 'APPROVED' | 'APPROVED_ALREADY_EXISTS';
     export const StatusEnum = {
-        Failed: 'FAILED' as StatusEnum,
-        Approved: 'APPROVED' as StatusEnum,
-        ApprovedAlreadyExists: 'APPROVED_ALREADY_EXISTS' as StatusEnum
+        FAILED: 'FAILED' as StatusEnum,
+        APPROVED: 'APPROVED' as StatusEnum,
+        APPROVED_ALREADY_EXISTS: 'APPROVED_ALREADY_EXISTS' as StatusEnum
     };
 }
 

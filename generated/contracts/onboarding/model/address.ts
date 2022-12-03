@@ -56,8 +56,8 @@ export interface Address {
 export namespace Address {
     export type TypeEnum = 'RESIDENTIAL' | 'MAILING';
     export const TypeEnum = {
-        Residential: 'RESIDENTIAL' as TypeEnum,
-        Mailing: 'MAILING' as TypeEnum
+        RESIDENTIAL: 'RESIDENTIAL' as TypeEnum,
+        MAILING: 'MAILING' as TypeEnum
     };
 }
 

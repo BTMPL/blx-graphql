@@ -69,8 +69,8 @@ type ValuesEmployment {
 type Employment {
   employmentType: String
   employerName: String
-  occupation: String
-  employmentSector: String
+  occupation: Occupation
+  employmentSector: EmploymentSector
   annualIncomeBracket: String
 }
 

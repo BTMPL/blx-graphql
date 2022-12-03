@@ -27,7 +27,7 @@ function trimGeneratedContract(contractName: string, keep: string[] = []) {
     execSync(
       `docker run --rm -v ${path.dirname(
         __dirname
-      )}:/local openapitools/openapi-generator-cli generate -i /local/contracts/${dir}/openapi.yaml -g typescript-angular -o /local/generated/contracts/${dir}`
+      )}:/local openapitools/openapi-generator-cli generate -i /local/contracts/${dir}/openapi.yaml -g typescript-angular -o /local/generated/contracts/${dir} --additional-properties=enumPropertyNaming=UPPERCASE`
     );
     // trim everything but models
     trimGeneratedContract(dir, ["model"]);

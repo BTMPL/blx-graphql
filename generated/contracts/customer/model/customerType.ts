@@ -14,9 +14,9 @@
 export type CustomerType = 'BANK_STAFF' | 'EXTERNAL_CUSTOMER' | 'SME_DIRECTOR' | 'SME_APPLICANT';
 
 export const CustomerType = {
-    BankStaff: 'BANK_STAFF' as CustomerType,
-    ExternalCustomer: 'EXTERNAL_CUSTOMER' as CustomerType,
-    SmeDirector: 'SME_DIRECTOR' as CustomerType,
-    SmeApplicant: 'SME_APPLICANT' as CustomerType
+    BANK_STAFF: 'BANK_STAFF' as CustomerType,
+    EXTERNAL_CUSTOMER: 'EXTERNAL_CUSTOMER' as CustomerType,
+    SME_DIRECTOR: 'SME_DIRECTOR' as CustomerType,
+    SME_APPLICANT: 'SME_APPLICANT' as CustomerType
 };
 

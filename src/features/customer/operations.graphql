@@ -56,8 +56,8 @@ input MobilePreferencesInput {
 input SaveEmploymentDataInput {
   employer: String
   employmentType: EmploymentType!
-  employmentSector: String
-  occupation: String
+  employmentSector: EmploymentSector
+  occupation: Occupation
   annualIncomeBracket: AnnualIncomeBracket
 }
 input ProfilesInput {

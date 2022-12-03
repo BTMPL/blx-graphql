@@ -1,4 +1,11 @@
-import { CustomerDetailsRs } from "../../../generated/contracts/customer/model/models";
+import {
+  Address,
+  CustomerDetailsRs,
+} from "../../../generated/contracts/customer/model/models";
+import {
+  EmploymentData,
+  StorePersonalDetailsRequest,
+} from "../../../generated/contracts/onboarding/model/models";
 import {
   AddressEnum,
   CheckUsernameUniquenessResponse,
@@ -22,6 +29,7 @@ import {
   MutationValidateOtpArgs,
   OtpValidationResponse,
   OtpValidationStatus,
+  PersonalDetailsInput,
   PersonalDetailsResponse,
   QueryCheckUsernameUniquenessArgs,
   RefreshTokensResponse,
@@ -31,6 +39,11 @@ import { Context } from "../../context/types";
 function facadeCustomer(customer: CustomerDetailsRs): CustomerDetailsResponse {
   return {
     ...customer,
+    employments: customer.employments.map((employment) => {
+      return {
+        ...employment,
+      };
+    }),
     addresses: customer.addresses.map((address) => {
       return {
         ...address,
@@ -53,6 +66,50 @@ function facadeCustomer(customer: CustomerDetailsRs): CustomerDetailsResponse {
         CustomerDepositAccountStatus[customer.statuses.depositAccounts],
       overall: CustomerOverallStatus[customer.statuses.overall],
     },
+  };
+}
+
+function facadePersonalDetails(
+  details: PersonalDetailsInput
+): StorePersonalDetailsRequest {
+  return {
+    acceptedDocuments: [],
+    customerId: details.customerId,
+    employment: {
+      employmentType:
+        EmploymentData.EmploymentTypeEnum[details.employment?.employmentType],
+      annualIncomeBracket:
+        EmploymentData.AnnualIncomeBracketEnum[
+          details.employment?.annualIncomeBracket
+        ],
+      employer: details.employment.employer,
+      employmentSector:
+        EmploymentData.EmploymentSectorEnum[
+          details.employment.employmentSector
+        ],
+      occupation: EmploymentData.OccupationEnum[details.employment.occupation],
+    },
+    mailingAddressSameAsResidence: details.mailingAddressSameAsResidence,
+    mobilePreferences: {},
+    profiles: {
+      accountSettingUpReasons: details.profiles.accountSettingUpReasons,
+      ethnicity: details.profiles.ethnicity,
+      maritalStatus: details.profiles.maritalStatus,
+    },
+    email: details.email,
+    mailingAddress: {
+      city: details.mailingAddress.city,
+      countryCode: details.mailingAddress.countryCode,
+      postalCode: details.mailingAddress.postalCode,
+      subdivision: details.mailingAddress.subdivision,
+      type: Address.TypeEnum[details.mailingAddress.type],
+      line1: details.mailingAddress.line1,
+      line2: details.mailingAddress.line2,
+      line3: details.mailingAddress.line3,
+      line4: details.mailingAddress.line4,
+      line5: details.mailingAddress.line5,
+    },
+    nickname: details.nickname,
   };
 }
 
@@ -111,14 +168,21 @@ export const resolvers = {
       args: MutationStorePersonalDetailsArgs,
       context: Context
     ): Promise<PersonalDetailsResponse> => {
-      const customer = await context.dataSources.customer.getCustomerById(
-        args.personalDetailsInput.customerId
-      );
+      try {
+        const store = await context.dataSources.onboarding.storePersonalDetails(
+          facadePersonalDetails(args.personalDetailsInput)
+        );
+        const customer = await context.dataSources.customer.getCustomerById(
+          args.personalDetailsInput.customerId
+        );
 
-      return {
-        customer: facadeCustomer(customer),
-        requestId: customer.requestId,
-      };
+        return {
+          customer: facadeCustomer(customer),
+          requestId: customer.requestId,
+        };
+      } catch {
+        throw new Error();
+      }
     },
     validateOtp: async (
       parent: any,

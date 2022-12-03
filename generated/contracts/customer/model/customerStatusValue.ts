@@ -14,9 +14,9 @@
 export type CustomerStatusValue = 'NOT_INITIATED' | 'INITIATED' | 'PASSED' | 'FAILED';
 
 export const CustomerStatusValue = {
-    NotInitiated: 'NOT_INITIATED' as CustomerStatusValue,
-    Initiated: 'INITIATED' as CustomerStatusValue,
-    Passed: 'PASSED' as CustomerStatusValue,
-    Failed: 'FAILED' as CustomerStatusValue
+    NOT_INITIATED: 'NOT_INITIATED' as CustomerStatusValue,
+    INITIATED: 'INITIATED' as CustomerStatusValue,
+    PASSED: 'PASSED' as CustomerStatusValue,
+    FAILED: 'FAILED' as CustomerStatusValue
 };
 

@@ -14,12 +14,12 @@
 export type CustomerOverallStatus = 'ONBOARDED' | 'ACTIVE' | 'FAILED' | 'PROSPECT' | 'ARCHIVED' | 'OFFBOARDING_PENDING' | 'OFFBOARDED';
 
 export const CustomerOverallStatus = {
-    Onboarded: 'ONBOARDED' as CustomerOverallStatus,
-    Active: 'ACTIVE' as CustomerOverallStatus,
-    Failed: 'FAILED' as CustomerOverallStatus,
-    Prospect: 'PROSPECT' as CustomerOverallStatus,
-    Archived: 'ARCHIVED' as CustomerOverallStatus,
-    OffboardingPending: 'OFFBOARDING_PENDING' as CustomerOverallStatus,
-    Offboarded: 'OFFBOARDED' as CustomerOverallStatus
+    ONBOARDED: 'ONBOARDED' as CustomerOverallStatus,
+    ACTIVE: 'ACTIVE' as CustomerOverallStatus,
+    FAILED: 'FAILED' as CustomerOverallStatus,
+    PROSPECT: 'PROSPECT' as CustomerOverallStatus,
+    ARCHIVED: 'ARCHIVED' as CustomerOverallStatus,
+    OFFBOARDING_PENDING: 'OFFBOARDING_PENDING' as CustomerOverallStatus,
+    OFFBOARDED: 'OFFBOARDED' as CustomerOverallStatus
 };
 
