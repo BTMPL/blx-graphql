@@ -17,6 +17,7 @@ export const config = {
   enableLandingPage: process.env.NODE_ENV !== "production",
   port: parseInt(process.env.PORT) || 4000,
   introspection: strToBoolean(process.env.INTROSPECTION_ENABLED),
+  maxQueryDepth: parseInt(process.env.MAX_QUERY_DEPTH) || 5,
   services: {
     customer: {
       url: process.env.SERVICE_CUSTOMER_URL,
