@@ -1,0 +1,1213 @@
+openapi: 3.0.3
+
+info:
+  title: Customer IAM Service API
+  version: 1.0.0
+  description: The Customer IAM Service API will allow using Customer IAM Gateway to perform operations related to PingOne
+
+tags:
+  - name: Users
+    description: Operations related to PingOne Users
+  - name: First Login
+    description: Operations related to PingOne Users First Login
+  - name: Refresh Token
+    description: Operations related to PingOne Users Refresh Token
+  - name: Subsequent Login
+    description: Operations related to PingOne Users Subsequent Login
+  - name: Transaction Approval
+    description: Operations related to PingOne Transaction Approval
+  - name: Step Up
+    description: Operations related to PingOne Step Up
+  - name: Login
+    description: Operations related to PingOne Login
+  - name: Logout
+    description: Operations related to PingOne Logout
+
+servers:
+  - url: http://localhost:8080/customer-iam-service/v1
+    description: local server
+
+paths:
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Creates User in PingOne
+      description: Creates User in PingOne
+      operationId: createUser
+      requestBody:
+        description: User to be created
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+      responses:
+        '200':
+          description: Create User Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateUserResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}/passcode:
+    post:
+      tags:
+        - Users
+      summary: Store passcode for user
+      description: Store passcode for user
+      operationId: storePasscode
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: "User Id"
+      requestBody:
+        description: Passcode to be stored
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePasscodeRequest'
+      responses:
+        '201':
+          description: 'Passcode stored'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}/email:
+    put:
+      tags:
+        - Users
+      summary: Update email
+      description: Update email
+      operationId: updateUserEmail
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: "userId of ping one user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateEmailRequest'
+      responses:
+        '200':
+          description: Email response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmailResponse'
+        '404':
+          description: Not Found
+          
+  /users/{userId}/secureword:
+    put:
+      tags:
+        - Users
+      summary: Update secure word
+      description: Update secure word
+      operationId: updateUserSecureWord
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: "userId of ping one user"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSecureWordRequest'
+      responses:
+        '200':
+          description: Secureword response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecureWordResponse'
+        '404':
+          description: Not Found
+  /users/{username}/secureword:
+    get:
+      tags:
+        - Users
+      summary: Get secure word
+      description: Get secure word
+      operationId: getUserSecureWord
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: "Username"
+
+      responses:
+        '200':
+          description: Secureword response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SecureWordResponse'
+        '404':
+          description: Not Found
+
+  /users/{username}/password:
+    put:
+      tags:
+        - Users
+      summary: Reset user password
+      description: Reset user password
+      operationId: resetUserPassword
+      requestBody:
+        description: User password
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetUserPasswordRequest'
+      parameters:
+        - in: path
+          name: username
+          schema:
+            type: string
+          required: true
+          description: "Username"
+      responses:
+        '200':
+          description: Password reset successfully.
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}/phoneNumber:
+    put:
+      tags:
+        - Users
+      summary: Unpair and pair new device with new phone number
+      description: Unpair and pair new device with new phone number
+      operationId: replaceDevice
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: User id of the user
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReplaceDeviceRequest'
+        required: true
+      responses:
+        '200':
+          description: Device unpaired successfully.
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
+  /users/{userId}/devices/{deviceId}:
+    delete:
+      tags:
+        - Users
+      summary: Unpair user device
+      description: Unpair user device
+      operationId: unpairUserDevice
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: User id of the user to delete its device.
+        - in: path
+          name: deviceId
+          schema:
+            type: string
+          required: true
+          description: Device id to be deleted.
+      responses:
+        '200':
+          description: Device unpaired successfully.
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /users/{userId}/devices:
+    get:
+      tags:
+        - Users
+      summary: Return user mobile devices
+      description: Return user mobile devices
+      operationId: getUserMobileDevices
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: User id
+      responses:
+        '200':
+          description: Current user mobile devices Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDevicesResponse'
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /first-login/initialize:
+    post:
+      tags:
+        - First Login
+      summary: Initialize first login with OTP
+      description: Initialize first login with OTP
+      operationId: initializeFirstLogin
+      requestBody:
+        description: User to be initialized credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitializeFirstLoginRequest'
+      responses:
+        '200':
+          description: First Login Initialization Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InitializeFirstLoginResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /first-login/token:
+    post:
+      tags:
+        - First Login
+      summary: Generate and refresh authorization token
+      description: Generate and refresh authorization token
+      operationId: generateAndRefreshAuthToken
+      requestBody:
+        description: OTP properties
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateAndRefreshAuthTokenRequest'
+      responses:
+        '200':
+          description: Authorization Token Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateAndRefreshAuthTokenResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /refresh-token:
+    post:
+      tags:
+        - Refresh Token
+      summary: Refresh token
+      description: Refresh token
+      operationId: refreshToken
+      requestBody:
+        description: Refresh Auth Token Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshAuthTokenRequest'
+      responses:
+        '200':
+          description: Authorization Token Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateAndRefreshAuthTokenResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /biometrics:
+    post:
+      tags:
+        - Refresh Token
+      summary: Authenticate with biometrics
+      operationId: biometricsAuthenticate
+      requestBody:
+        description: Biometrics authorization request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BiometricsRequest'
+      responses:
+        '200':
+          description: Refresh token response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateAndRefreshAuthTokenResponse'
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /subsequent-login/initialize:
+    post:
+      tags:
+        - Subsequent Login
+      summary: Subsequent login
+      description: Subsequent login
+      operationId: subsequentLoginInitialize
+      requestBody:
+        description: User credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginCredentialsWithMobilePayload'
+
+      responses:
+        '200':
+          description: Subsequent login response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowStatusResponse'
+
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /subsequent-login/token:
+    post:
+      tags:
+        - Subsequent Login
+      summary: Request refresh token - subsequent login
+      description: Request refresh token - subsequent login
+      operationId: generateAndRefreshAuthTokenSubsequentLogin
+      requestBody:
+        description: Flow identifier
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubsequentLoginTokenRequest'
+
+      responses:
+        '200':
+          description: Authorization Token Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateAndRefreshAuthTokenResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /transaction-approval/token:
+    post:
+      tags:
+        - Transaction Approval
+      summary: Call token endpoint
+      description: Call token endpoint for transaction approval
+      operationId: generateTransactionToken
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionApprovalTokenRequest'
+      responses:
+        '200':
+          description: Token generated successfully.
+        default:
+          description: Api Error Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /transaction-approval/initialize:
+    post:
+      tags:
+        - Transaction Approval
+      summary: Transaction approval initialization
+      description: Transaction approval initialization
+      operationId: transactionApprovalInitialize
+      requestBody:
+        description: Transaction Approval Initialization Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionApprovalInitializationRequest'
+      responses:
+        '200':
+          description: Transaction Approval Initialization Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransactionApprovalInitializationResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /step-up/initialize:
+    post:
+      tags:
+        - Step Up
+      summary: Step-up initialization
+      description: Step-up initialization
+      operationId: stepUpInitialize
+      requestBody:
+        description: Step-up Initialization Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StepUpInitializationRequest'
+      responses:
+        '200':
+          description: Step-up Initialization Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StepUpInitializationResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /step-up/token:
+    post:
+      tags:
+        - Step Up
+      summary: Request list of token - step-up flow
+      description: Request list of token - step-up flow
+      operationId: generateToken
+      requestBody:
+        description: Request based on flowId and otp
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRequest'
+
+      responses:
+        '200':
+          description: Response list of token
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenerateAndRefreshAuthTokenResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login/initialize:
+    post:
+      tags:
+        - Login
+      summary: Initialize first login with OTP
+      description: Initialize first login with OTP
+      operationId: loginInitialize
+      requestBody:
+        description: User to be initialized credentials
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitializeLoginRequest'
+      responses:
+        '200':
+          description: First Login Initialization Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowStatusResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login/recoverPasswordByNric:
+    post:
+      tags:
+        - Login
+      summary: Initialize forgotten password flow
+      description: Initialize forgotten password flow that requires NRIC and sends recovery code to email address
+      operationId: initializeForgottenPasswordByNric
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InitializeForgottenPasswordByNricRequest'
+      responses:
+        '200':
+          description: First Login Initialization Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowStatusResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login/complete:
+    post:
+      tags:
+        - Login
+      summary: Generate and refresh authorization token
+      description: Generate and refresh authorization token
+      operationId: loginComplete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GenerateAndRefreshAuthTokenRequest'
+      responses:
+        '200':
+          description: Authorization Token Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteLoginResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /logout/{userId}:
+    post:
+      tags:
+        - Logout
+      summary: Logout user
+      description: Logout user
+      operationId: logoutUser
+      parameters:
+        - in: path
+          name: userId
+          schema:
+            type: string
+          required: true
+          description: "UserId"
+      responses:
+        '200':
+          description: OK
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login/setPasswordByRecoveryCode:
+    post:
+      tags:
+        - Login
+      summary: Set password by recovery code
+      description: Set password by recovery code
+      operationId: loginSetPasswordByRecoveryCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetPasswordByRecoveryCodeRequest'
+      responses:
+        '200':
+          description: Authorization Token Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowStatusResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /login/resendRecoveryCode:
+    post:
+      tags:
+        - Login
+      summary: Resend recovery code
+      description: Resend recovery code
+      operationId: resendRecoveryCode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResendRecoveryCodeRequest'
+      responses:
+        '200':
+          description: Resend recovery code Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FlowStatusResponse'
+        default:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    #    CreateUserRequest object definition
+    UpdateSecureWordRequest:
+      type: object
+      title: 'Secure word'
+      properties:
+        secureword:
+          type: string
+          description: 'New secureword'
+          example: '12aA3321'
+      required: [ secureword ]
+
+    UpdateEmailRequest:
+      type: object
+      title: 'Email'
+      properties:
+        email:
+          type: string
+          description: 'New email'
+          example: 'foo@bar.com'
+      required: [ email ]
+
+    CreateUserRequest:
+      type: object
+      title: 'User Request'
+      properties:
+        customerId:
+          type: string
+          description: 'Customer id'
+          format: uuid
+        email:
+          type: string
+          description: 'Email'
+          example: 'customerdemo2@example.com'
+        username:
+          type: string
+          description: 'User name'
+          example: 'customerdemo2@example.com'
+        secureword:
+          type: string
+          description: 'Secure word'
+          example: 'somethingrandom'
+        phone:
+          type: string
+          description: 'Phone'
+          example: '+91.7003752368'
+        password:
+          type: string
+          description: 'Password'
+          example: '4Science!'
+      required: [ customerId, email, username, secureword, phone, password ]
+
+    #    CreateUserRequest object definition
+    CreatePasscodeRequest:
+      type: object
+      title: 'Passcode Request'
+      properties:
+        passcode:
+          type: string
+          description: 'Passcode hash'
+          example: 'passcode'
+      required: [ passcode ]
+
+    #    CreateUserResponse object definition
+    CreateUserResponse:
+      type: object
+      title: 'User Response'
+      properties:
+        pingoneUserId:
+          type: string
+      required: [ pingoneUserId ]
+
+    #    InitializeFirstLoginRequest object definition
+    InitializeFirstLoginRequest:
+      type: object
+      title: 'Initialize First Login Request'
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        mobilePayload:
+          type: string
+      required: [ username, password, mobilePayload ]
+
+    #    InitializeFirstLoginResponse object definition
+    InitializeFirstLoginResponse:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - type: object
+          properties:
+            expiresAt:
+              type: string
+          format: date-time
+
+    #    RefreshAuthTokenRequest object definition
+    RefreshAuthTokenRequest:
+      type: object
+      title: 'Refresh Auth Token Request'
+      properties:
+        refreshToken:
+          type: string
+      required: [ refreshToken ]
+
+    #    GenerateAndRefreshAuthTokenRequest object definition
+    GenerateAndRefreshAuthTokenRequest:
+      title: 'Generate And Refresh Auth Token Request'
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - $ref: "#/components/schemas/Otp"
+
+    #    GenerateAndRefreshAuthTokenResponse object definition
+    GenerateAndRefreshAuthTokenResponse:
+      type: object
+      title: 'Generate And Refresh Auth Token Response'
+      properties:
+        accessToken:
+          type: string
+        refreshToken:
+          type: string
+        ttl:
+          type: integer
+        idToken:
+          type: string
+      required: [ accessToken, refreshToken, ttl, idToken ]
+
+    SecureWordResponse:
+      type: object
+      title: 'Secure word'
+      properties:
+        secureword:
+          type: string
+        nickname:
+          type: string
+          
+    EmailResponse:
+      type: object
+      title: 'Email word'
+      properties:
+        email:
+          type: string
+
+    #    Error Response
+    ErrorResponse:
+      type: object
+      title: 'Error Response'
+      description: 'Error details.'
+      properties:
+        name:
+          type: string
+          description: 'Human readable, unique name of the error.'
+        message:
+          type: string
+          description: 'Message describing the error.'
+        errorId:
+          type: string
+          description: 'Error id to easy search in logs.'
+        details:
+          $ref: "#/components/schemas/Details"
+      required: [ name, message, errorId ]
+
+    #   Details object definition
+    Details:
+      type: object
+      title: 'details'
+      properties:
+        attemptsRemaining:
+          type: integer
+        secondsUntilUnlock:
+          type: integer
+
+    BiometricsRequest:
+      allOf:
+        - $ref: "#/components/schemas/MobilePayload"
+        - $ref: "#/components/schemas/RefreshToken"
+
+    #    TransactionApprovalInitializationRequest object definition
+    TransactionApprovalInitializationRequest:
+      type: object
+      title: 'Transaction Approval Initialization Request'
+      properties:
+        username:
+          type: string
+        transactionUuid:
+          type: string
+        sum:
+          type: number
+        currency:
+          type: string
+        recipient:
+          type: string
+      required: [ username, transactionUuid, sum, currency, recipient ]
+
+    #    TransactionApprovalInitializationResponse object definition
+    TransactionApprovalInitializationResponse:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+
+    #    TransactionApprovalTokenRequest object definition
+    TransactionApprovalTokenRequest:
+      type: object
+      title: 'Transaction Approval Token Request'
+      properties:
+        flowId:
+          type: string
+        totp:
+          type: string
+      required: [ flowId, totp ]
+
+    #    ResetUserPasswordRequest object definition
+    ResetUserPasswordRequest:
+      type: object
+      title: 'Reset User Password Request'
+      properties:
+        password:
+          type: string
+      required: [ password ]
+
+    #    ReplaceDeviceRequest object definition
+    ReplaceDeviceRequest:
+      type: object
+      title: "Replace device request"
+      properties:
+        newPhoneNumber:
+          type: string
+      required: [newPhoneNumber]
+
+
+    #    StepUpInitializationRequest object definition
+    StepUpInitializationRequest:
+      type: object
+      title: 'Step-up Initialization Request'
+      properties:
+        username:
+          type: string
+        mobilePayload:
+          type: string
+        password:
+          type: string
+        scopes:
+          type: array
+          items:
+            type: string
+      required:
+        - username
+
+    #    StepUpInitializationResponse object definition
+    StepUpInitializationResponse:
+      type: object
+      title: 'Step-up Initialization Response'
+      properties:
+        flowId:
+          type: string
+        status:
+          type: string
+          enum: [ TOTP_REQUIRED, OTP_REQUIRED ]
+      required:
+        - flowId
+        - status
+
+    #  TokenRequest object definition
+    TokenRequest:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - $ref: "#/components/schemas/Otp"
+
+    FlowStatusResponse:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - $ref: "#/components/schemas/FlowStatus"
+        - $ref: "#/components/schemas/FlowStatusDetails"
+
+    InitializeLoginRequest:
+      title: 'Initialize First Login Request'
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        mobilePayload:
+          type: string
+        deviceMetadata:
+          $ref: "#/components/schemas/DeviceMetadata"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeviceUser"
+      required:
+        - username
+        - password
+        - mobilePayload
+
+    InitializeForgottenPasswordByNricRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        nric:
+          type: string
+        email:
+          type: string
+        mobilePayload:
+          type: string
+        deviceMetadata:
+          $ref: "#/components/schemas/DeviceMetadata"
+        users:
+          type: array
+          items:
+            $ref: "#/components/schemas/DeviceUser"
+      required:
+        - nric
+        - email
+        - mobilePayload
+
+    CompleteLoginRequest:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - $ref: "#/components/schemas/Otp"
+
+    CompleteLoginResponse:
+      allOf:
+        - $ref: "#/components/schemas/GenerateAndRefreshAuthTokenResponse"
+        - type: object
+          properties:
+            notificationToken:
+              type: string
+            usernameToken:
+              type: string
+            scopes:
+              type: array
+              items:
+                type: string
+          required:
+            - notificationToken
+            - usernameToken
+
+    SetPasswordByRecoveryCodeRequest:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - type: object
+          properties:
+            recoveryCode:
+              type: string
+            newPassword:
+              type: string
+          required:
+            - recoveryCode
+            - newPassword
+
+    # common schemas
+    MobilePayload:
+      type: object
+      title: 'Mobile payload'
+      properties:
+        mobilePayload:
+          type: string
+      required:
+        - mobilePayload
+
+    RefreshToken:
+      type: object
+      title: 'RefreshToken'
+      properties:
+        refreshToken:
+          type: string
+      required:
+        - refreshToken
+
+    Otp:
+      type: object
+      title: 'OTP'
+      properties:
+        otp:
+          type: string
+      required:
+        - otp
+
+    LoginCredentialsWithMobilePayload:
+      type: object
+      title: 'User login credentials with mobile payload'
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+        mobilePayload:
+          type: string
+      required: [ username, password ]
+
+    SubsequentLoginTokenRequest:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"
+        - $ref: "#/components/schemas/Otp"
+
+    #    FlowId object definition
+    FlowId:
+      type: object
+      title: 'Flow identification'
+      properties:
+        flowId:
+          type: string
+      required:
+        - flowId
+
+    #    FlowId object definition
+    FlowStatus:
+      type: object
+      title: 'Flow status'
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    DeviceUser:
+      type: object
+      title: "Device user"
+      properties:
+        id:
+          type: string
+        environment:
+          type: object
+          properties:
+            id:
+              type: string
+
+    FlowStatusDetails:
+      type: object
+      title: 'Flow status additional details'
+      properties:
+        expiresAt:
+          type: string
+
+    DeviceMetadata:
+      type: object
+      title: 'User device metadata'
+      properties:
+        deviceOs:
+          type: string
+          description: "Device operation system"
+          minLength: 1
+          example: "iOS 14"
+          nullable: false
+        deviceModel:
+          type: string
+          description: "Device made and model"
+          minLength: 1
+          example: "iPhone X"
+          nullable: false
+      required:
+        - deviceOs
+        - deviceModel
+
+    UserDevicesResponse:
+      title: 'User Devices Response'
+      type: object
+      properties:
+        devices:
+          type: array
+          items:
+           $ref: "#/components/schemas/DeviceInfo"
+      required:
+          - devices
+
+    DeviceInfo:
+      type: object
+      title: 'Device Info'
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    #   ResendRecoveryCodeRequest object definition
+    ResendRecoveryCodeRequest:
+      allOf:
+        - $ref: "#/components/schemas/FlowId"

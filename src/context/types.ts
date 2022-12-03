@@ -14,4 +14,5 @@ export interface Auth {
   id?: string;
   name?: string;
   jwt?: string;
+  refreshToken?: string;
 }

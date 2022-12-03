@@ -21,6 +21,9 @@ export const config = {
     customer: {
       url: process.env.SERVICE_CUSTOMER_URL,
     },
+    customerIam: {
+      url: process.env.SERVICE_CUSTOMER_IAM_URL,
+    },
     onboarding: {
       url: process.env.SERVICE_ONBOARDING_URL,
     },

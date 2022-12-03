@@ -79,6 +79,15 @@ export enum AnnualIncomeBracket {
   RM120000_AND_ABOVE = 'RM120000_AND_ABOVE'
 }
 
+export type AuthTokenInfo = {
+  __typename?: 'AuthTokenInfo';
+  accessToken: Scalars['String'];
+  context?: Maybe<LoginContext>;
+  idToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  ttl: Scalars['Int'];
+};
+
 export type CheckUsernameUniquenessResponse = {
   __typename?: 'CheckUsernameUniquenessResponse';
   usernameIsUnique?: Maybe<Scalars['Boolean']>;
@@ -282,6 +291,11 @@ export type Device = {
   updatedAt?: Maybe<Scalars['Date']>;
 };
 
+export type DeviceMetadataInput = {
+  deviceModel: Scalars['String'];
+  deviceOs: Scalars['String'];
+};
+
 export type Document = {
   __typename?: 'Document';
   id?: Maybe<Scalars['ID']>;
@@ -341,6 +355,47 @@ export type IdentityVerificationsResponse = {
   status: Scalars['String'];
 };
 
+export type InitializeLoginInput = {
+  deviceMetadata?: InputMaybe<DeviceMetadataInput>;
+  password: Scalars['String'];
+  pingOneInfo?: InputMaybe<Scalars['String']>;
+  pingOneMobilePayload: Scalars['String'];
+  username: Scalars['String'];
+};
+
+export type InitializeLoginResponse = {
+  __typename?: 'InitializeLoginResponse';
+  expiresAt?: Maybe<Scalars['Date']>;
+  flowId: Scalars['String'];
+};
+
+export type LoginCompleteInput = {
+  flowId: Scalars['String'];
+  otp: Scalars['String'];
+};
+
+export type LoginCompleteResponse = {
+  __typename?: 'LoginCompleteResponse';
+  accessToken: Scalars['String'];
+  context: LoginContext;
+  idToken: Scalars['String'];
+  notificationToken: Scalars['String'];
+  refreshToken: Scalars['String'];
+  ttl: Scalars['Int'];
+  usernameToken: Scalars['String'];
+};
+
+export enum LoginContext {
+  RETAIL = 'RETAIL',
+  SME = 'SME'
+}
+
+export type LogoutUserResponse = {
+  __typename?: 'LogoutUserResponse';
+  message: Scalars['String'];
+  success: Scalars['Boolean'];
+};
+
 export type MobilePreferences = {
   __typename?: 'MobilePreferences';
   marketingEmailFlag?: Maybe<Scalars['Boolean']>;
@@ -362,6 +417,10 @@ export type Mutation = {
   __typename?: 'Mutation';
   createIamAccount: CreateIamAccountResponse;
   createInitialCustomer: CreateCustomerResponse;
+  loginComplete: LoginCompleteResponse;
+  loginInitialize: InitializeLoginResponse;
+  logoutUser: LogoutUserResponse;
+  refreshTokens: RefreshTokensResponse;
   storePersonalDetails: PersonalDetailsResponse;
   validateOtp: OtpValidationResponse;
 };
@@ -374,6 +433,21 @@ export type MutationCreateIamAccountArgs = {
 
 export type MutationCreateInitialCustomerArgs = {
   customerMobileInput: CustomerMobileDeviceInput;
+};
+
+
+export type MutationLoginCompleteArgs = {
+  input: LoginCompleteInput;
+};
+
+
+export type MutationLoginInitializeArgs = {
+  input: InitializeLoginInput;
+};
+
+
+export type MutationRefreshTokensArgs = {
+  refreshToken: Scalars['String'];
 };
 
 
@@ -456,6 +530,11 @@ export type Query = {
 
 export type QueryCheckUsernameUniquenessArgs = {
   username: Scalars['String'];
+};
+
+export type RefreshTokensResponse = {
+  __typename?: 'RefreshTokensResponse';
+  authTokenInfo?: Maybe<AuthTokenInfo>;
 };
 
 export type SaveEmploymentDataInput = {
@@ -554,6 +633,7 @@ export type ResolversTypes = {
   AddressEnum: AddressEnum;
   AddressInput: AddressInput;
   AnnualIncomeBracket: AnnualIncomeBracket;
+  AuthTokenInfo: ResolverTypeWrapper<AuthTokenInfo>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   CheckUsernameUniquenessResponse: ResolverTypeWrapper<CheckUsernameUniquenessResponse>;
   CreateCustomerResponse: ResolverTypeWrapper<CreateCustomerResponse>;
@@ -574,6 +654,7 @@ export type ResolversTypes = {
   Date: ResolverTypeWrapper<Scalars['Date']>;
   DepositAccount: ResolverTypeWrapper<DepositAccount>;
   Device: ResolverTypeWrapper<Device>;
+  DeviceMetadataInput: DeviceMetadataInput;
   Document: ResolverTypeWrapper<Document>;
   DocumentIdInput: DocumentIdInput;
   Employment: ResolverTypeWrapper<Employment>;
@@ -583,7 +664,13 @@ export type ResolversTypes = {
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Iam: ResolverTypeWrapper<Iam>;
   IdentityVerificationsResponse: ResolverTypeWrapper<IdentityVerificationsResponse>;
+  InitializeLoginInput: InitializeLoginInput;
+  InitializeLoginResponse: ResolverTypeWrapper<InitializeLoginResponse>;
   Int: ResolverTypeWrapper<Scalars['Int']>;
+  LoginCompleteInput: LoginCompleteInput;
+  LoginCompleteResponse: ResolverTypeWrapper<LoginCompleteResponse>;
+  LoginContext: LoginContext;
+  LogoutUserResponse: ResolverTypeWrapper<LogoutUserResponse>;
   MobilePreferences: ResolverTypeWrapper<MobilePreferences>;
   MobilePreferencesInput: MobilePreferencesInput;
   Mutation: ResolverTypeWrapper<{}>;
@@ -595,6 +682,7 @@ export type ResolversTypes = {
   Profiles: ResolverTypeWrapper<Profiles>;
   ProfilesInput: ProfilesInput;
   Query: ResolverTypeWrapper<{}>;
+  RefreshTokensResponse: ResolverTypeWrapper<RefreshTokensResponse>;
   SaveEmploymentDataInput: SaveEmploymentDataInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Values: ResolverTypeWrapper<Values>;
@@ -607,6 +695,7 @@ export type ResolversParentTypes = {
   Account: Account;
   Address: Address;
   AddressInput: AddressInput;
+  AuthTokenInfo: AuthTokenInfo;
   Boolean: Scalars['Boolean'];
   CheckUsernameUniquenessResponse: CheckUsernameUniquenessResponse;
   CreateCustomerResponse: CreateCustomerResponse;
@@ -623,6 +712,7 @@ export type ResolversParentTypes = {
   Date: Scalars['Date'];
   DepositAccount: DepositAccount;
   Device: Device;
+  DeviceMetadataInput: DeviceMetadataInput;
   Document: Document;
   DocumentIdInput: DocumentIdInput;
   Employment: Employment;
@@ -631,7 +721,12 @@ export type ResolversParentTypes = {
   ID: Scalars['ID'];
   Iam: Iam;
   IdentityVerificationsResponse: IdentityVerificationsResponse;
+  InitializeLoginInput: InitializeLoginInput;
+  InitializeLoginResponse: InitializeLoginResponse;
   Int: Scalars['Int'];
+  LoginCompleteInput: LoginCompleteInput;
+  LoginCompleteResponse: LoginCompleteResponse;
+  LogoutUserResponse: LogoutUserResponse;
   MobilePreferences: MobilePreferences;
   MobilePreferencesInput: MobilePreferencesInput;
   Mutation: {};
@@ -642,6 +737,7 @@ export type ResolversParentTypes = {
   Profiles: Profiles;
   ProfilesInput: ProfilesInput;
   Query: {};
+  RefreshTokensResponse: RefreshTokensResponse;
   SaveEmploymentDataInput: SaveEmploymentDataInput;
   String: Scalars['String'];
   Values: Values;
@@ -675,6 +771,15 @@ export type AddressResolvers<ContextType = Context, ParentType extends Resolvers
   postalCode?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subdivision?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['AddressEnum'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type AuthTokenInfoResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AuthTokenInfo'] = ResolversParentTypes['AuthTokenInfo']> = {
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  context?: Resolver<Maybe<ResolversTypes['LoginContext']>, ParentType, ContextType>;
+  idToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ttl?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -868,6 +973,29 @@ export type IdentityVerificationsResponseResolvers<ContextType = Context, Parent
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type InitializeLoginResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['InitializeLoginResponse'] = ResolversParentTypes['InitializeLoginResponse']> = {
+  expiresAt?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
+  flowId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LoginCompleteResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LoginCompleteResponse'] = ResolversParentTypes['LoginCompleteResponse']> = {
+  accessToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  context?: Resolver<ResolversTypes['LoginContext'], ParentType, ContextType>;
+  idToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  notificationToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  refreshToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ttl?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  usernameToken?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type LogoutUserResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['LogoutUserResponse'] = ResolversParentTypes['LogoutUserResponse']> = {
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  success?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MobilePreferencesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['MobilePreferences'] = ResolversParentTypes['MobilePreferences']> = {
   marketingEmailFlag?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   marketingPhoneCallFlag?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -880,6 +1008,10 @@ export type MobilePreferencesResolvers<ContextType = Context, ParentType extends
 export type MutationResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   createIamAccount?: Resolver<ResolversTypes['CreateIamAccountResponse'], ParentType, ContextType, RequireFields<MutationCreateIamAccountArgs, 'iamAccountInput'>>;
   createInitialCustomer?: Resolver<ResolversTypes['CreateCustomerResponse'], ParentType, ContextType, RequireFields<MutationCreateInitialCustomerArgs, 'customerMobileInput'>>;
+  loginComplete?: Resolver<ResolversTypes['LoginCompleteResponse'], ParentType, ContextType, RequireFields<MutationLoginCompleteArgs, 'input'>>;
+  loginInitialize?: Resolver<ResolversTypes['InitializeLoginResponse'], ParentType, ContextType, RequireFields<MutationLoginInitializeArgs, 'input'>>;
+  logoutUser?: Resolver<ResolversTypes['LogoutUserResponse'], ParentType, ContextType>;
+  refreshTokens?: Resolver<ResolversTypes['RefreshTokensResponse'], ParentType, ContextType, RequireFields<MutationRefreshTokensArgs, 'refreshToken'>>;
   storePersonalDetails?: Resolver<ResolversTypes['PersonalDetailsResponse'], ParentType, ContextType, RequireFields<MutationStorePersonalDetailsArgs, 'personalDetailsInput'>>;
   validateOtp?: Resolver<ResolversTypes['OtpValidationResponse'], ParentType, ContextType, RequireFields<MutationValidateOtpArgs, 'otpValidationInput'>>;
 };
@@ -916,6 +1048,11 @@ export type QueryResolvers<ContextType = Context, ParentType extends ResolversPa
   documents?: Resolver<Maybe<Array<ResolversTypes['Document']>>, ParentType, ContextType>;
 };
 
+export type RefreshTokensResponseResolvers<ContextType = Context, ParentType extends ResolversParentTypes['RefreshTokensResponse'] = ResolversParentTypes['RefreshTokensResponse']> = {
+  authTokenInfo?: Resolver<Maybe<ResolversTypes['AuthTokenInfo']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type ValuesResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Values'] = ResolversParentTypes['Values']> = {
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -933,6 +1070,7 @@ export type Resolvers<ContextType = Context> = {
   AcceptedDocument?: AcceptedDocumentResolvers<ContextType>;
   Account?: AccountResolvers<ContextType>;
   Address?: AddressResolvers<ContextType>;
+  AuthTokenInfo?: AuthTokenInfoResolvers<ContextType>;
   CheckUsernameUniquenessResponse?: CheckUsernameUniquenessResponseResolvers<ContextType>;
   CreateCustomerResponse?: CreateCustomerResponseResolvers<ContextType>;
   CreateIamAccountResponse?: CreateIamAccountResponseResolvers<ContextType>;
@@ -951,12 +1089,16 @@ export type Resolvers<ContextType = Context> = {
   GetCustomerDetailsResponse?: GetCustomerDetailsResponseResolvers<ContextType>;
   Iam?: IamResolvers<ContextType>;
   IdentityVerificationsResponse?: IdentityVerificationsResponseResolvers<ContextType>;
+  InitializeLoginResponse?: InitializeLoginResponseResolvers<ContextType>;
+  LoginCompleteResponse?: LoginCompleteResponseResolvers<ContextType>;
+  LogoutUserResponse?: LogoutUserResponseResolvers<ContextType>;
   MobilePreferences?: MobilePreferencesResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   OtpValidationResponse?: OtpValidationResponseResolvers<ContextType>;
   PersonalDetailsResponse?: PersonalDetailsResponseResolvers<ContextType>;
   Profiles?: ProfilesResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
+  RefreshTokensResponse?: RefreshTokensResponseResolvers<ContextType>;
   Values?: ValuesResolvers<ContextType>;
   ValuesEmployment?: ValuesEmploymentResolvers<ContextType>;
 };

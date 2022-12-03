@@ -67,3 +67,8 @@ enum OtpValidationStatus {
   APPROVED
   APPROVED_ALREADY_EXISTS
 }
+
+enum LoginContext {
+  RETAIL
+  SME
+}

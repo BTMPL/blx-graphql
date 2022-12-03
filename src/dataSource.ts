@@ -27,6 +27,6 @@ export class AuthenticatedRESTDataSource extends RESTDataSource {
       request.headers["authorization"] = `Bearer ${this.token}`;
     }
 
-    request.headers["x-request-id"] = v4();
+    request.headers["x-request-id"] = this.requestId || v4();
   }
 }

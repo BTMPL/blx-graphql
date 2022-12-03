@@ -9,14 +9,22 @@ import {
   CustomerDetailsResponse,
   CustomerOverallStatus,
   CustomerStatusValue,
+  InitializeLoginResponse,
+  LoginCompleteResponse,
+  LoginContext,
+  LogoutUserResponse,
   MutationCreateIamAccountArgs,
   MutationCreateInitialCustomerArgs,
+  MutationLoginCompleteArgs,
+  MutationLoginInitializeArgs,
+  MutationRefreshTokensArgs,
   MutationStorePersonalDetailsArgs,
   MutationValidateOtpArgs,
   OtpValidationResponse,
   OtpValidationStatus,
   PersonalDetailsResponse,
   QueryCheckUsernameUniquenessArgs,
+  RefreshTokensResponse,
 } from "../../../generated/graphql";
 import { Context } from "../../context/types";
 
@@ -94,8 +102,8 @@ export const resolvers = {
         username: args.iamAccountInput.username,
       });
       return {
-        pingoneUserId: "String",
-        requestId: "String",
+        pingoneUserId: iam.pingoneUserId,
+        requestId: iam.requestId,
       };
     },
     storePersonalDetails: async (
@@ -109,7 +117,7 @@ export const resolvers = {
 
       return {
         customer: facadeCustomer(customer),
-        requestId: "String",
+        requestId: customer.requestId,
       };
     },
     validateOtp: async (
@@ -126,6 +134,72 @@ export const resolvers = {
 
       return {
         status: OtpValidationStatus[verification.status],
+      };
+    },
+    loginInitialize: async (
+      parent: any,
+      args: MutationLoginInitializeArgs,
+      context: Context
+    ): Promise<InitializeLoginResponse> => {
+      const data = await context.dataSources.customerIam.loginInitialize({
+        username: args.input.username,
+        password: args.input.password,
+        mobilePayload: args.input.pingOneMobilePayload,
+      });
+
+      return {
+        flowId: data.flowId,
+        expiresAt: data.expiresAt,
+      };
+    },
+    loginComplete: async (
+      parent: any,
+      args: MutationLoginCompleteArgs,
+      context: Context
+    ): Promise<LoginCompleteResponse> => {
+      const data = await context.dataSources.customerIam.loginComplete({
+        flowId: args.input.flowId,
+        otp: args.input.otp,
+      });
+      return {
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        idToken: data.idToken,
+        ttl: data.ttl,
+        context: LoginContext.RETAIL,
+        notificationToken: data.notificationToken,
+        usernameToken: data.usernameToken,
+      };
+    },
+    refreshTokens: async (
+      parent: any,
+      args: MutationRefreshTokensArgs,
+      context: Context
+    ): Promise<RefreshTokensResponse> => {
+      const response = await context.dataSources.customerIam.refreshToken(
+        context.auth.refreshToken
+      );
+      return {
+        authTokenInfo: {
+          accessToken: response.accessToken,
+          idToken: response.idToken,
+          refreshToken: response.refreshToken,
+          ttl: response.ttl,
+          context: LoginContext.RETAIL,
+        },
+      };
+    },
+    logoutUser: async (
+      parent: any,
+      args: void,
+      context: Context
+    ): Promise<LogoutUserResponse> => {
+      const data = await context.dataSources.customerIam.logoutUser(
+        context.auth.id
+      );
+      return {
+        success: true,
+        message: "",
       };
     },
   },

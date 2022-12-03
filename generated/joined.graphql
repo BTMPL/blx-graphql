@@ -71,6 +71,11 @@ enum OtpValidationStatus {
   APPROVED_ALREADY_EXISTS
 }
 
+enum LoginContext {
+  RETAIL
+  SME
+}
+
 type Query {
   checkUsernameUniqueness(username: String!): CheckUsernameUniquenessResponse
   depositAccount: [DepositAccount]
@@ -82,6 +87,10 @@ type Mutation {
   createIamAccount(iamAccountInput: CreateIamAccountInput!): CreateIamAccountResponse!
   storePersonalDetails(personalDetailsInput: PersonalDetailsInput!): PersonalDetailsResponse!
   validateOtp(otpValidationInput: OtpValidationInput!): OtpValidationResponse!
+  loginInitialize(input: InitializeLoginInput!): InitializeLoginResponse!
+  refreshTokens(refreshToken: String!): RefreshTokensResponse! @auth(requires: USER)
+  loginComplete(input: LoginCompleteInput!): LoginCompleteResponse!
+  logoutUser: LogoutUserResponse!
 }
 
 input CreateIamAccountInput {
@@ -156,6 +165,24 @@ input CustomerMobileDeviceInput {
   deviceOs: String!
   deviceModel: String!
   deviceInstallationId: String
+}
+
+input InitializeLoginInput {
+  username: String!
+  password: String!
+  pingOneMobilePayload: String!
+  deviceMetadata: DeviceMetadataInput
+  pingOneInfo: String
+}
+
+input DeviceMetadataInput {
+  deviceOs: String!
+  deviceModel: String!
+}
+
+input LoginCompleteInput {
+  flowId: String!
+  otp: String!
 }
 
 type PersonalDetailsResponse {
@@ -380,6 +407,38 @@ type OtpValidationResponse {
 
 type CheckUsernameUniquenessResponse {
   usernameIsUnique: Boolean
+}
+
+type InitializeLoginResponse {
+  flowId: String!
+  expiresAt: Date
+}
+
+type RefreshTokensResponse {
+  authTokenInfo: AuthTokenInfo
+}
+
+type AuthTokenInfo {
+  accessToken: String!
+  refreshToken: String!
+  ttl: Int!
+  idToken: String!
+  context: LoginContext
+}
+
+type LoginCompleteResponse {
+  accessToken: String!
+  refreshToken: String!
+  ttl: Int!
+  idToken: String!
+  notificationToken: String!
+  usernameToken: String!
+  context: LoginContext!
+}
+
+type LogoutUserResponse {
+  message: String!
+  success: Boolean!
 }
 
 type DepositAccount {

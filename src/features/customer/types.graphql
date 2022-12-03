@@ -224,3 +224,35 @@ type OtpValidationResponse {
 type CheckUsernameUniquenessResponse {
   usernameIsUnique: Boolean
 }
+
+type InitializeLoginResponse {
+  flowId: String!
+  expiresAt: Date
+}
+
+type RefreshTokensResponse {
+  authTokenInfo: AuthTokenInfo
+}
+
+type AuthTokenInfo {
+  accessToken: String!
+  refreshToken: String!
+  ttl: Int!
+  idToken: String!
+  context: LoginContext
+}
+
+type LoginCompleteResponse {
+  accessToken: String!
+  refreshToken: String!
+  ttl: Int!
+  idToken: String!
+  notificationToken: String!
+  usernameToken: String!
+  context: LoginContext!
+}
+
+type LogoutUserResponse {
+  message: String!
+  success: Boolean!
+}
