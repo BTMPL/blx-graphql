@@ -3,6 +3,7 @@ import { StandaloneServerContextFunctionArgument } from "@apollo/server/dist/esm
 import { defaultFieldResolver, GraphQLSchema } from "graphql";
 import jwtDecode from "jwt-decode";
 import { Auth, Context, Token } from "./types";
+import { NotAuthorizedError } from "../errors/NotAuthorizedError";
 
 export const authContext = async (
   args: StandaloneServerContextFunctionArgument
@@ -58,7 +59,7 @@ export const authDirective = () => {
                 info
               ) {
                 if (!isAuthorised(context.auth.jwt, requires)) {
-                  throw new Error("Not authorized");
+                  throw new NotAuthorizedError();
                 }
                 return resolve(source, args, context, info);
               };

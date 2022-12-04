@@ -1,10 +1,12 @@
 import { v4 } from "uuid";
 import {
+  RequestOptions,
   RESTDataSource,
   WillSendRequestOptions,
 } from "@apollo/datasource-rest";
 import { ApolloServer } from "@apollo/server";
 import { Context } from "./context/types";
+import { MicroserviceError } from "./errors/MicroserviceError";
 
 export class AuthenticatedRESTDataSource extends RESTDataSource {
   protected token: string = "";
@@ -28,5 +30,16 @@ export class AuthenticatedRESTDataSource extends RESTDataSource {
     }
 
     request.headers["x-request-id"] = this.requestId || v4();
+  }
+
+  protected override didEncounterError(
+    error: Error,
+    _request: RequestOptions
+  ): void {
+    throw new MicroserviceError(undefined, {
+      extensions: {
+        xRequestId: this.requestId,
+      },
+    });
   }
 }
