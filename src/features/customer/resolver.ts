@@ -177,6 +177,14 @@ export const resolvers = {
       const store = await context.dataSources.onboarding.storePersonalDetails(
         facadePersonalDetails(args.personalDetailsInput)
       );
+
+      /**
+       * There's a race condition, at leas when developing, that results in the data being
+       * fetched from the customer service before the onboarding service updates it. We add
+       * a 1 second pause to give the microservices time to update the data.
+       */
+      await new Promise((res) => setTimeout(res, 1 * 1000));
+
       const customer = await context.dataSources.customer.getCustomerById(
         args.personalDetailsInput.customerId
       );
