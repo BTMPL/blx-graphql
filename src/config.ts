@@ -15,6 +15,7 @@ const strToBoolean = (str: string) => str === "true";
 export const config = {
   logging: strToBoolean(process.env.LOGGER),
   enableLandingPage: process.env.NODE_ENV !== "production",
+  preserveOriginalError: process.env.NODE_ENV !== "production",
   port: parseInt(process.env.PORT) || 4000,
   introspection: strToBoolean(process.env.INTROSPECTION_ENABLED),
   maxQueryDepth: parseInt(process.env.MAX_QUERY_DEPTH) || 5,

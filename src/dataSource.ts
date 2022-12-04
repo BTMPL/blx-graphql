@@ -7,6 +7,7 @@ import {
 import { ApolloServer } from "@apollo/server";
 import { Context } from "./context/types";
 import { MicroserviceError } from "./errors/MicroserviceError";
+import { config } from "./config";
 
 export class AuthenticatedRESTDataSource extends RESTDataSource {
   protected token: string = "";
@@ -39,6 +40,7 @@ export class AuthenticatedRESTDataSource extends RESTDataSource {
     throw new MicroserviceError(undefined, {
       extensions: {
         xRequestId: this.requestId,
+        originalError: config.preserveOriginalError ? error : undefined,
       },
     });
   }
