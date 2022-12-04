@@ -67,7 +67,7 @@ input ProfilesInput {
 }
 
 input DocumentIdInput {
-  documentId: Int!
+  documentId: ID!
 }
 
 input AddressInput {

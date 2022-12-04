@@ -101,15 +101,16 @@ export class OnboardingAPI extends AuthenticatedRESTDataSource {
   async createIamAccount(
     input: IamRequest
   ): Promise<IamResponse & { requestId: string }> {
+    const body: IamRequest = {
+      customerId: input.customerId,
+      email: input.email,
+      username: input.username,
+      secureword: input.secureword,
+      phoneNumber: input.password,
+      password: input.password,
+    };
     const data = await this.post(`/v1/create-iam-account`, {
-      body: {
-        customerId: input.customerId,
-        email: input.email,
-        username: input.username,
-        secureword: input.secureword,
-        phone: input.password,
-        password: input.password,
-      },
+      body,
     });
 
     return {
@@ -119,7 +120,7 @@ export class OnboardingAPI extends AuthenticatedRESTDataSource {
   }
 
   async storePersonalDetails(input: StorePersonalDetailsRequest) {
-    return this.post(`/v1/personal-detils`, {
+    return this.post(`/v1/personal-details`, {
       body: input,
     });
   }

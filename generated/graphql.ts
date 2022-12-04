@@ -306,7 +306,7 @@ export type Document = {
 };
 
 export type DocumentIdInput = {
-  documentId: Scalars['Int'];
+  documentId: Scalars['ID'];
 };
 
 export type Employment = {
@@ -616,6 +616,11 @@ export type RefreshTokensResponse = {
   authTokenInfo?: Maybe<AuthTokenInfo>;
 };
 
+export enum Role {
+  UNKNOWN = 'UNKNOWN',
+  USER = 'USER'
+}
+
 export type SaveEmploymentDataInput = {
   annualIncomeBracket?: InputMaybe<AnnualIncomeBracket>;
   employer?: InputMaybe<Scalars['String']>;
@@ -764,6 +769,7 @@ export type ResolversTypes = {
   ProfilesInput: ProfilesInput;
   Query: ResolverTypeWrapper<{}>;
   RefreshTokensResponse: ResolverTypeWrapper<RefreshTokensResponse>;
+  Role: Role;
   SaveEmploymentDataInput: SaveEmploymentDataInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Values: ResolverTypeWrapper<Values>;
@@ -824,6 +830,12 @@ export type ResolversParentTypes = {
   Values: Values;
   ValuesEmployment: ValuesEmployment;
 };
+
+export type AuthDirectiveArgs = {
+  requires?: Maybe<Role>;
+};
+
+export type AuthDirectiveResolver<Result, Parent, ContextType = Context, Args = AuthDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type AcceptedDocumentResolvers<ContextType = Context, ParentType extends ResolversParentTypes['AcceptedDocument'] = ResolversParentTypes['AcceptedDocument']> = {
   acceptedDocumentDate?: Resolver<Maybe<ResolversTypes['Date']>, ParentType, ContextType>;
@@ -1184,3 +1196,6 @@ export type Resolvers<ContextType = Context> = {
   ValuesEmployment?: ValuesEmploymentResolvers<ContextType>;
 };
 
+export type DirectiveResolvers<ContextType = Context> = {
+  auth?: AuthDirectiveResolver<any, any, ContextType>;
+};

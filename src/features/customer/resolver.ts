@@ -72,8 +72,8 @@ function facadeCustomer(customer: CustomerDetailsRs): CustomerDetailsResponse {
 function facadePersonalDetails(
   details: PersonalDetailsInput
 ): StorePersonalDetailsRequest {
-  return {
-    acceptedDocuments: [],
+  const payload = {
+    acceptedDocuments: details.acceptedDocuments,
     customerId: details.customerId,
     employment: {
       employmentType:
@@ -111,6 +111,12 @@ function facadePersonalDetails(
     },
     nickname: details.nickname,
   };
+
+  if (details.mailingAddressSameAsResidence) {
+    delete payload.mailingAddress;
+  }
+
+  return payload;
 }
 
 export const resolvers = {
@@ -168,21 +174,17 @@ export const resolvers = {
       args: MutationStorePersonalDetailsArgs,
       context: Context
     ): Promise<PersonalDetailsResponse> => {
-      try {
-        const store = await context.dataSources.onboarding.storePersonalDetails(
-          facadePersonalDetails(args.personalDetailsInput)
-        );
-        const customer = await context.dataSources.customer.getCustomerById(
-          args.personalDetailsInput.customerId
-        );
+      const store = await context.dataSources.onboarding.storePersonalDetails(
+        facadePersonalDetails(args.personalDetailsInput)
+      );
+      const customer = await context.dataSources.customer.getCustomerById(
+        args.personalDetailsInput.customerId
+      );
 
-        return {
-          customer: facadeCustomer(customer),
-          requestId: customer.requestId,
-        };
-      } catch {
-        throw new Error();
-      }
+      return {
+        customer: facadeCustomer(customer),
+        requestId: customer.requestId,
+      };
     },
     validateOtp: async (
       parent: any,
