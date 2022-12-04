@@ -1,3 +1,4 @@
+import { v4 } from "uuid";
 import { ApolloServer } from "@apollo/server";
 import { ExpressContextFunctionArgument } from "@apollo/server/dist/esm/express4";
 
@@ -36,7 +37,7 @@ export const context =
       dataSources: data({
         server,
         token: auth.jwt,
-        requestId: "aaaa3c25-1c6a-4101-9f33-8b3cb67ab74a",
+        requestId: v4(),
       }),
     };
   };
