@@ -9,3 +9,7 @@ services:
       - "4000:4000"
     environment:
       - NODE_ENV=production
+      - SERVICE_CUSTOMER_URL=https://customer-service.customer-service.svc.cluster.local:8080/customer-service
+      - SERVICE_CUSTOMER_IAM_URL=https://customer-iam-service.customer-iam-service.svc.cluster.local:8080/customer-iam-service
+      - SERVICE_ONBOARDING_URL=https://onboarding-service.onboarding-service.svc.cluster.local:8080/onboarding-service
+      - SERVICE_DOCUMENTS_URL=https://dcr-service.dcr-service.svc.cluster.local:8080/api
