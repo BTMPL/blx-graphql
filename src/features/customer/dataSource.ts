@@ -106,7 +106,7 @@ export class OnboardingAPI extends AuthenticatedRESTDataSource {
       email: input.email,
       username: input.username,
       secureword: input.secureword,
-      phoneNumber: input.password,
+      phoneNumber: input.phoneNumber,
       password: input.password,
     };
     const data = await this.post(`/v1/create-iam-account`, {
